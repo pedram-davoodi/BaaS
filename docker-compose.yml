@@ -1,0 +1,50 @@
+version: '3'
+
+services:
+  # PHP Service
+  php:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./:/var/www/html
+    networks:
+      - laravel
+    ports:
+      - "8081:80"
+
+  # RabbitMQ Service
+  rabbitmq:
+    image: "rabbitmq:management"
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - laravel
+
+  # MySQL Service
+  mysql:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: laravel
+      MYSQL_USER: laravel
+      MYSQL_PASSWORD: secret
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - laravel
+
+  # Redis Service
+  redis:
+    image: redis:latest
+    networks:
+      - laravel
+
+networks:
+  laravel:
+    driver: bridge
+
+volumes:
+  mysql_data:
+
