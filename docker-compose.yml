@@ -1,50 +1,69 @@
 version: '3'
 
 services:
-  # PHP Service
-  php:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    volumes:
-      - ./:/var/www/html
-    networks:
-      - laravel
-    ports:
-      - "8081:80"
+    # PHP Service
+    php:
+        container_name: web
+        build:
+            context: .
+            dockerfile: Dockerfile
+        volumes:
+            - ./:/var/www/html
+        networks:
+            - laravel
+        ports:
+            - "8081:80"
 
-  # RabbitMQ Service
-  rabbitmq:
-    image: "rabbitmq:management"
-    ports:
-      - "5672:5672"
-      - "15672:15672"
-    networks:
-      - laravel
+    # RabbitMQ Service
+    rabbitmq:
+        image: "rabbitmq:management"
+        environment:
+            RABBITMQ_DEFAULT_USER: admin
+            RABBITMQ_DEFAULT_PASS: password
+        ports:
+            - "5672:5672"
+            - "15672:15672"
+        networks:
+            - laravel
 
-  # MySQL Service
-  mysql:
-    image: mysql:latest
-    environment:
-      MYSQL_ROOT_PASSWORD: secret
-      MYSQL_DATABASE: laravel
-      MYSQL_USER: laravel
-      MYSQL_PASSWORD: secret
-    volumes:
-      - mysql_data:/var/lib/mysql
-    networks:
-      - laravel
+    # MySQL Service
+    mysql:
+        container_name: mysql
+        image: mysql:latest
+        environment:
+            MYSQL_ROOT_PASSWORD: secret
+            MYSQL_DATABASE: laravel
+            MYSQL_USER: laravel
+            MYSQL_PASSWORD: secret
+        volumes:
+            - mysql_data:/var/lib/mysql
+        networks:
+            - laravel
+        ports:
+            - "3309:3306"
 
-  # Redis Service
-  redis:
-    image: redis:latest
-    networks:
-      - laravel
+    # Redis Service
+    redis:
+        image: redis:latest
+        networks:
+            - laravel
+
+    # PHPMyAdmin Service
+    phpmyadmin:
+        image: phpmyadmin/phpmyadmin
+        environment:
+            PMA_HOST: mysql
+            PMA_USER: root
+            PMA_PASSWORD: secret
+            PMA_PORT: 3306
+        ports:
+            - "8082:80"
+        networks:
+            - laravel
 
 networks:
-  laravel:
-    driver: bridge
+    laravel:
+        driver: bridge
 
 volumes:
-  mysql_data:
-
+    mysql_data:
