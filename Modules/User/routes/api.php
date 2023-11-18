@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Modules\User\app\Http\Controllers\Admin\AdminController;
 use Modules\User\app\Http\Controllers\Admin\UserController as AdminUserController;
 use Modules\User\app\Http\Controllers\User\UserController;
 
@@ -24,6 +25,12 @@ Route::group(['prefix' => 'users-module'] , function (){
     Route::group(['prefix' => 'user'] , function (){
         Route::post('login', [UserController::class , 'login']);
         Route::post('register', [UserController::class , 'register']);
+    });
+
+
+    Route::group(['prefix' => 'admin'] , function (){
+        Route::post('login', [AdminController::class , 'login']);
+        Route::post('register', [AdminController::class , 'register']);
     });
 
 });

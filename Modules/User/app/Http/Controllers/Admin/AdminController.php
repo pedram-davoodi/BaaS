@@ -1,17 +1,17 @@
 <?php
 
-namespace Modules\User\app\Http\Controllers\User;
+namespace Modules\User\app\Http\Controllers\Admin;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use Modules\User\app\Events\UserLoggedIn;
-use Modules\User\app\Events\UserRegistered;
-use Modules\User\app\Models\User;
+use Modules\User\app\Events\AdminLoggedIn;
+use Modules\User\app\Events\AdminRegistered;
+use Modules\User\app\Models\Admin;
 
-class UserController extends Controller
+class AdminController extends Controller
 {
     /**
      * Handles user logins
@@ -28,15 +28,15 @@ class UserController extends Controller
 
         $credentials = request(['email', 'password']);
 
-        if (!Auth::attempt($credentials)) {
+        $admin = Admin::firstWhere('email' , $credentials['email']);
+
+        if (!Hash::check($credentials['password' ] , $admin->password)) {
             return response()->json(['message' => 'Unauthorized'], 401);
         }
-
-        $user = $request->user();
-        $tokenResult = $user->createToken('User Access Token');
+        $tokenResult = $admin->createToken('Personal Access Token');
 
         // Dispatch logged in event
-        UserLoggedIn::dispatch($user);
+        AdminLoggedIn::dispatch($admin);
 
         return response()->json([
             'access_token' => $tokenResult->accessToken,
@@ -56,7 +56,7 @@ class UserController extends Controller
         // Validate the incoming request data
         $validator = Validator::make($request->all(), [
             'name' => 'required',
-            'email' => 'unique:users,email|required|email',
+            'email' => 'unique:admins,email|required|email',
             'password' => 'required',
             'c_password' => 'required|same:password',
         ]);
@@ -69,14 +69,15 @@ class UserController extends Controller
         // Create a new user
         $input = $request->all();
         $input['password'] = bcrypt($input['password']);
-        $user = User::create($input);
 
-        // Dispatch register event
-        UserRegistered::dispatch($user);
+        $admin = Admin::create($input);
+
+        // Dispatch logged in event
+        AdminRegistered::dispatch($admin);
 
         // Create and return an access token along with user details
-        $success['token'] = $user->createToken('MyApp')->accessToken;
-        $success['name'] = $user->name;
+        $success['token'] = $admin->createToken('MyApp')->accessToken;
+        $success['name'] = $admin->name;
         return response()->json(['success' => $success]);
     }
 }
