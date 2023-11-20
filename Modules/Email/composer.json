@@ -18,7 +18,7 @@
     "autoload": {
         "psr-4": {
             "Modules\\Email\\": "",
-            "Modules\\Email\\App\\": "app/",
+            "Modules\\Email\\app\\": "app/",
             "Modules\\Email\\Database\\Factories\\": "database/factories/",
             "Modules\\Email\\Database\\Seeders\\": "database/seeders/"
         }

@@ -4,6 +4,7 @@ namespace Modules\User\app\Services;
 
 use App\Events\ForgetPassword;
 use App\Events\UserLoggedIn;
+use App\Events\UserPasswordWasRest;
 use App\Events\UserRegistered;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -71,8 +72,26 @@ class UserService
     public function forgetPassword(string $email): void
     {
         $user = User::firstWhere('email', $email);
-        throw_if(empty($user), LoginWrongCredentialException::class);
+
+        if (empty($user))
+            return;
+
         PasswordResetToken::updateOrCreate(['email' => $email], ['token' => $token = Hash::make(Str::random(32))]);
+
         ForgetPassword::dispatch($user, $token);
+    }
+
+    /**
+     * Reset the user's password and dispatch an event.
+     *
+     * @param User $user The user for whom the password will be reset.
+     * @param string $newPassword The new password for the user.
+     * @return void
+     */
+    public function resetPassword(User $user, string $newPassword): void
+    {
+        $user->update(['password' => bcrypt($newPassword)]);
+        PasswordResetToken::find($user->email)->delete();
+        UserPasswordWasRest::dispatch($user);
     }
 }
