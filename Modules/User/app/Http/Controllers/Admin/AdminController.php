@@ -34,9 +34,11 @@ class AdminController extends Controller
             LoginWrongCredentialException::class,
             __("admin.login.wrongCredential")
         );
-        $tokenResult = $this->adminService->createAccesToken(
+
+        $tokenResult = $this->adminService->createAccessToken(
             $admin = Admin::firstWhere('email', $request->get('email'))
         );
+
         return new AdminLoginResource($admin, $tokenResult);
     }
 
@@ -49,7 +51,7 @@ class AdminController extends Controller
     public function register(AdminRegisterRequest $request): AdminLoginResource
     {
         $admin = $this->adminService->createAdmin($request);
-        $token = $this->adminService->createAccesToken($admin);
+        $token = $this->adminService->createAccessToken($admin);
         return new AdminLoginResource($admin, $token);
     }
 }

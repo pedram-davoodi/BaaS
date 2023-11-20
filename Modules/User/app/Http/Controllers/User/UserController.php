@@ -50,7 +50,7 @@ class UserController extends Controller
     {
         $user = $this->userService->createUser($request);
         $token = $this->userService->createAccessToken($user);
-        return new LoginResource($request->user(), $token);
+        return new LoginResource($user, $token);
     }
 
     /**
