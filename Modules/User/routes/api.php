@@ -27,7 +27,7 @@ Route::group(['prefix' => 'users-module'] , function (){
         Route::post('register', [UserController::class , 'register']);
         Route::post('forget-password', [UserController::class , 'forgetPassword']);
         Route::post('check-forget-password-token', [UserController::class , 'checkForgetPasswordToken']);
-        Route::post('rest-password', [UserController::class , 'resetPassword']);
+        Route::put('rest-password', [UserController::class , 'resetPassword']);
     });
 
 
