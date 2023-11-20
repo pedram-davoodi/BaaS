@@ -1,19 +1,21 @@
 <?php
 
-namespace Modules\User\App\Events;
+namespace App\Events;
 
 use Illuminate\Broadcasting\InteractsWithSockets;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use Modules\User\App\Models\Admin;
-class AdminLoggedIn
+use Modules\User\app\Models\User;
+
+class UserLoggedIn implements ShouldQueue
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     /**
      * Create a new event instance.
      */
-    public function __construct(public Admin $admin)
+    public function __construct(public User $user)
     {
     }
 }

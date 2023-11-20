@@ -1,13 +1,14 @@
 <?php
 
-namespace Modules\User\app\Events;
+namespace App\Events;
 
 use Illuminate\Broadcasting\InteractsWithSockets;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 use Modules\User\app\Models\User;
 
-class UserLoggedIn
+class UserRegistered implements ShouldQueue
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 

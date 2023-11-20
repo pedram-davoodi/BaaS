@@ -1,20 +1,20 @@
 <?php
 
-namespace Modules\User\App\Events;
+namespace App\Events;
 
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use Modules\User\App\Models\Admin;
+use Modules\User\app\Models\User;
 
-class AdminRegistered
+class ForgetPassword
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     /**
      * Create a new event instance.
      */
-    public function __construct(public Admin $admin)
+    public function __construct(public User $user ,public string $token)
     {
     }
 }

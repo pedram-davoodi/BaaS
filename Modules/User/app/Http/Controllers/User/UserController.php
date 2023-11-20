@@ -2,81 +2,72 @@
 
 namespace Modules\User\app\Http\Controllers\User;
 
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Validator;
-use Modules\User\app\Events\UserLoggedIn;
-use Modules\User\app\Events\UserRegistered;
-use Modules\User\app\Models\User;
+use Modules\User\app\Exceptions\LoginWrongCredentialException;
+use Modules\User\app\Http\Requests\ForgetPasswordRequest;
+use Modules\User\app\Http\Requests\LoginRequest;
+use Modules\User\app\Http\Requests\RegisterRequest;
+use Modules\User\app\Resources\LoginResource;
+use Modules\User\app\Services\UserService;
+use Throwable;
 
+/**
+ * Class UserController
+ *
+ * @package Modules\User\app\Http\Controllers\User
+ */
 class UserController extends Controller
 {
+    public function __construct(public UserService $userService){}
+
     /**
-     * Handles user logins
+     * Handles user logins.
      *
-     * @param Request $request
-     * @return JsonResponse
+     * @param LoginRequest $request
+     * @return LoginResource
+     * @throws Throwable
      */
-    public function login(Request $request): JsonResponse
+    public function login(LoginRequest $request): LoginResource
     {
-        $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
-        ]);
-
-        $credentials = request(['email', 'password']);
-
-        if (!Auth::attempt($credentials)) {
-            return response()->json(['message' => 'Unauthorized'], 401);
-        }
-
-        $user = $request->user();
-        $tokenResult = $user->createToken('User Access Token');
-
-        // Dispatch logged in event
-        UserLoggedIn::dispatch($user);
-
-        return response()->json([
-            'access_token' => $tokenResult->accessToken,
-            'token_type' => 'Bearer',
-            'expires_at' => $tokenResult->token->expires_at,
-        ]);
+        throw_if(!$this->userService->checkUserCredential($request), LoginWrongCredentialException::class);
+        $tokenResult = $this->userService->createAccessToken($request->user());
+        return new LoginResource($request->user(), $tokenResult);
     }
 
     /**
-     * Register API
+     * Register API.
      *
-     * @param Request $request
-     * @return JsonResponse
+     * @param RegisterRequest $request
+     * @return LoginResource
      */
-    public function register(Request $request): JsonResponse
+    public function register(RegisterRequest $request): LoginResource
     {
-        // Validate the incoming request data
-        $validator = Validator::make($request->all(), [
-            'name' => 'required',
-            'email' => 'unique:users,email|required|email',
-            'password' => 'required',
-            'c_password' => 'required|same:password',
-        ]);
+        $user = $this->userService->createUser($request);
+        $token = $this->userService->createAccesToken($user);
+        return new LoginResource($request->user(), $token);
+    }
 
-        // If validation fails, return error response
-        if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors()], 401);
-        }
+    /**
+     * Initiate the forget password process.
+     *
+     * @param ForgetPasswordRequest $request
+     * @return Response
+     * @throws Throwable
+     */
+    public function forgetPassword(ForgetPasswordRequest $request): Response
+    {
+        $this->userService->forgetPassword($request->email);
+        return response()->noContent();
+    }
 
-        // Create a new user
-        $input = $request->all();
-        $input['password'] = bcrypt($input['password']);
-        $user = User::create($input);
+    /**
+     * Reset user's password.
+     *
+     * @return void
+     */
+    public function resetPassword()
+    {
 
-        // Dispatch register event
-        UserRegistered::dispatch($user);
-
-        // Create and return an access token along with user details
-        $success['token'] = $user->createToken('MyApp')->accessToken;
-        $success['name'] = $user->name;
-        return response()->json(['success' => $success]);
     }
 }

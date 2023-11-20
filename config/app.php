@@ -159,6 +159,7 @@ return [
         /*
          * Package Service Providers...
          */
+        \Modules\Email\app\Providers\EmailServiceProvider::class,
 
         /*
          * Application Service Providers...

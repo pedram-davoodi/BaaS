@@ -1,0 +1,12 @@
+{
+    "name": "Email",
+    "alias": "email",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Email\\app\\Providers\\EmailServiceProvider",
+        "Modules\\Email\\app\\Providers\\EventServiceProvider"
+    ],
+    "files": []
+}

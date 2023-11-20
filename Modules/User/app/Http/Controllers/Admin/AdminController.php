@@ -2,82 +2,54 @@
 
 namespace Modules\User\app\Http\Controllers\Admin;
 
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
-use Modules\User\app\Events\AdminLoggedIn;
-use Modules\User\app\Events\AdminRegistered;
+use Modules\User\app\Exceptions\LoginWrongCredentialException;
+use Modules\User\app\Http\Requests\AdminLoginRequest;
+use Modules\User\app\Http\Requests\AdminRegisterRequest;
 use Modules\User\app\Models\Admin;
+use Modules\User\app\Resources\AdminLoginResource;
+use Modules\User\app\Services\AdminService;
+use Throwable;
 
+/**
+ * Class AdminController
+ *
+ * @package Modules\User\app\Http\Controllers\Admin
+ */
 class AdminController extends Controller
 {
+    public function __construct(private readonly AdminService $adminService){}
+
     /**
-     * Handles user logins
+     * Handles admin logins.
      *
-     * @param Request $request
-     * @return JsonResponse
+     * @param AdminLoginRequest $request
+     * @return AdminLoginResource
+     * @throws Throwable
      */
-    public function login(Request $request): JsonResponse
+    public function login(AdminLoginRequest $request): AdminLoginResource
     {
-        $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
-        ]);
-
-        $credentials = request(['email', 'password']);
-
-        $admin = Admin::firstWhere('email' , $credentials['email']);
-
-        if (!Hash::check($credentials['password' ] , $admin->password)) {
-            return response()->json(['message' => 'Unauthorized'], 401);
-        }
-        $tokenResult = $admin->createToken('Personal Access Token');
-
-        // Dispatch logged in event
-        AdminLoggedIn::dispatch($admin);
-
-        return response()->json([
-            'access_token' => $tokenResult->accessToken,
-            'token_type' => 'Bearer',
-            'expires_at' => $tokenResult->token->expires_at,
-        ]);
+        throw_if(
+            !$this->adminService->checkAdminCredential($request),
+            LoginWrongCredentialException::class,
+            __("admin.login.wrongCredential")
+        );
+        $tokenResult = $this->adminService->createAccesToken(
+            $admin = Admin::firstWhere('email', $request->get('email'))
+        );
+        return new AdminLoginResource($admin, $tokenResult);
     }
 
     /**
-     * Register API
+     * Register API for admin.
      *
-     * @param Request $request
-     * @return JsonResponse
+     * @param AdminRegisterRequest $request
+     * @return AdminLoginResource
      */
-    public function register(Request $request): JsonResponse
+    public function register(AdminRegisterRequest $request): AdminLoginResource
     {
-        // Validate the incoming request data
-        $validator = Validator::make($request->all(), [
-            'name' => 'required',
-            'email' => 'unique:admins,email|required|email',
-            'password' => 'required',
-            'c_password' => 'required|same:password',
-        ]);
-
-        // If validation fails, return error response
-        if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors()], 401);
-        }
-
-        // Create a new user
-        $input = $request->all();
-        $input['password'] = bcrypt($input['password']);
-
-        $admin = Admin::create($input);
-
-        // Dispatch logged in event
-        AdminRegistered::dispatch($admin);
-
-        // Create and return an access token along with user details
-        $success['token'] = $admin->createToken('MyApp')->accessToken;
-        $success['name'] = $admin->name;
-        return response()->json(['success' => $success]);
+        $admin = $this->adminService->createAdmin($request);
+        $token = $this->adminService->createAccesToken($admin);
+        return new AdminLoginResource($admin, $token);
     }
 }
