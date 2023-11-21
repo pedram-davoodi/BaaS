@@ -6,6 +6,7 @@ use App\Events\ForgetPassword;
 use App\Events\UserLoggedIn;
 use App\Events\UserPasswordWasRest;
 use App\Events\UserRegistered;
+use App\Events\UserUpdated;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -13,6 +14,7 @@ use Laravel\Passport\PersonalAccessTokenResult;
 use Modules\User\app\Exceptions\LoginWrongCredentialException;
 use Modules\User\app\Http\Requests\LoginRequest;
 use Modules\User\app\Http\Requests\RegisterRequest;
+use Modules\User\app\Http\Requests\UpdateUserRequest;
 use Modules\User\app\Models\PasswordResetToken;
 use Modules\User\app\Models\User;
 use Throwable;
@@ -32,10 +34,30 @@ class UserService
      */
     public function createUser(RegisterRequest $request): User
     {
-        $input = $request->all();
+        $input = $request->validated();
         $input['password'] = bcrypt($input['password']);
         $user = User::create($input);
         UserRegistered::dispatch($user);
+        return $user;
+    }
+
+
+    /**
+     * update an existing user.
+     *
+     * @param User $user
+     * @param UpdateUserRequest $request
+     * @return User
+     */
+    public function updateUser(User $user , UpdateUserRequest $request): User
+    {
+        $input = $request->validated();
+
+        if (isset($input['password'])) {
+            $input['password'] = bcrypt($input['password']);
+        }
+        $user->update($input);
+        UserUpdated::dispatch($user);
         return $user;
     }
 
