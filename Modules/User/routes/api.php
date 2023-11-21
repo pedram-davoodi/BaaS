@@ -19,8 +19,8 @@ use Modules\User\app\Http\Controllers\User\UserController;
 Route::group(['prefix' => 'users-module'] , function (){
 
     Route::group(['prefix' => 'admin'] , function (){
-        Route::resource('user' , AdminUserController::class);
-    });
+        Route::resource('users' , AdminUserController::class);
+    })->middleware('auth:api-admin');
 
     Route::group(['prefix' => 'user'] , function (){
         Route::post('login', [UserController::class , 'login']);
