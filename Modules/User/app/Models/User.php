@@ -2,14 +2,14 @@
 
 namespace Modules\User\app\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\ModelInterfaces\AdminModelInterface;
+use App\ModelInterfaces\UserModelInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
-use \App\DataObjects\User as UserDataObject;
 
-class User extends UserDataObject
+class User extends Authenticatable implements UserModelInterface
 {
     use HasApiTokens, HasFactory, Notifiable;
 

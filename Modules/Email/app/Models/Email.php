@@ -2,10 +2,11 @@
 
 namespace Modules\Email\app\Models;
 
+use App\ModelInterfaces\EmailModelInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use App\DataObjects\Email as EmailDataObject;
+use Illuminate\Database\Eloquent\Model;
 
-class Email extends EmailDataObject
+class Email extends Model implements EmailModelInterface
 {
     use HasFactory;
 

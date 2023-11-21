@@ -6,7 +6,7 @@ use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use App\DataObjects\User;
+use App\ModelInterfaces\UserModelInterface;
 
 class UserLoggedIn implements ShouldQueue
 {
@@ -15,7 +15,7 @@ class UserLoggedIn implements ShouldQueue
     /**
      * Create a new event instance.
      */
-    public function __construct(public User $user)
+    public function __construct(public UserModelInterface $user)
     {
     }
 }

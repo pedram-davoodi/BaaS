@@ -6,7 +6,7 @@ use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use App\DataObjects\Admin;
+use App\ModelInterfaces\AdminModelInterface;
 
 class AdminLoggedIn implements ShouldQueue
 {
@@ -15,7 +15,7 @@ class AdminLoggedIn implements ShouldQueue
     /**
      * Create a new event instance.
      */
-    public function __construct(public Admin $admin)
+    public function __construct(public AdminModelInterface $admin)
     {
     }
 }

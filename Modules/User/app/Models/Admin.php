@@ -2,12 +2,13 @@
 
 namespace Modules\User\app\Models;
 
+use App\ModelInterfaces\AdminModelInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
-use \App\DataObjects\Admin as AdminDataObject;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class Admin extends AdminDataObject
+class Admin extends Authenticatable implements AdminModelInterface
 {
     use HasApiTokens, HasFactory, Notifiable;
 

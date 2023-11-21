@@ -5,7 +5,7 @@ namespace App\Events;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use App\DataObjects\User;
+use App\ModelInterfaces\UserModelInterface;
 
 class UserUpdated
 {
@@ -14,7 +14,7 @@ class UserUpdated
     /**
      * Create a new event instance.
      */
-    public function __construct(public User $user)
+    public function __construct(public UserModelInterface $user)
     {
     }
 }
