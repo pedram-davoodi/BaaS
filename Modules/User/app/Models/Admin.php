@@ -1,14 +1,13 @@
 <?php
 
-namespace Modules\User\App\Models;
+namespace Modules\User\app\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
-use Illuminate\Foundation\Auth\User as Authenticatable;
+use \App\DataObjects\Admin as AdminDataObject;
 
-class Admin extends Authenticatable
+class Admin extends AdminDataObject
 {
     use HasApiTokens, HasFactory, Notifiable;
 

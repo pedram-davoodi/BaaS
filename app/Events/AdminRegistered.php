@@ -6,7 +6,7 @@ use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use Modules\User\App\Models\Admin;
+use App\DataObjects\Admin;
 
 class AdminRegistered implements ShouldQueue
 {
