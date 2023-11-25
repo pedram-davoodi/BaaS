@@ -9,11 +9,9 @@ use Illuminate\Support\Collection;
 abstract class Repository implements RepositoryInterface
 {
     protected Model $model;
+    protected string $modelClass;
 
-    /**
-     * @param string $modelClass
-     */
-    public function __construct(private readonly string $modelClass)
+    public function __construct()
     {
         $this->model = app($this->modelClass);
     }

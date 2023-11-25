@@ -2,9 +2,9 @@
 
 namespace Modules\User\app\Models;
 
-use App\ModelInterfaces\AdminModelInterface;
 use App\ModelInterfaces\UserModelInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
@@ -43,4 +43,14 @@ class User extends Authenticatable implements UserModelInterface
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    /**
+     * Blocked account if exists
+     *
+     * @return HasOne
+     */
+    public function blockedAccount(): HasOne
+    {
+        return $this->hasOne(BlockedAccount::class);
+    }
 }

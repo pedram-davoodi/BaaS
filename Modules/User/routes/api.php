@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Modules\User\app\Http\Controllers\Admin\AdminController;
+use Modules\User\app\Http\Controllers\Admin\BlockedAccountController;
 use Modules\User\app\Http\Controllers\Admin\UserController as AdminUserController;
 use Modules\User\app\Http\Controllers\User\UserController;
 
@@ -19,8 +20,15 @@ use Modules\User\app\Http\Controllers\User\UserController;
 Route::group(['prefix' => 'users-module'] , function (){
 
     Route::group(['prefix' => 'admin'] , function (){
-        Route::resource('users' , AdminUserController::class);
-    })->middleware('auth:api-admin');
+        Route::post('login', [AdminController::class , 'login']);
+        Route::post('register', [AdminController::class , 'register']);
+
+        Route::group(['middleware' => ['auth:api-admin']] , function (){
+            Route::resource('users' , AdminUserController::class);
+            Route::resource('blocked-accounts', BlockedAccountController::class)->only(['store' , 'index' , 'destroy']);
+        });
+
+    });
 
     Route::group(['prefix' => 'user'] , function (){
         Route::post('login', [UserController::class , 'login']);
@@ -28,12 +36,6 @@ Route::group(['prefix' => 'users-module'] , function (){
         Route::post('forget-password', [UserController::class , 'forgetPassword']);
         Route::post('check-forget-password-token', [UserController::class , 'checkForgetPasswordToken']);
         Route::put('rest-password', [UserController::class , 'resetPassword']);
-    });
-
-
-    Route::group(['prefix' => 'admin'] , function (){
-        Route::post('login', [AdminController::class , 'login']);
-        Route::post('register', [AdminController::class , 'register']);
     });
 
 });
