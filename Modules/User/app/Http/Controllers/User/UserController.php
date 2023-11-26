@@ -35,7 +35,7 @@ class UserController extends Controller
      */
     public function login(LoginRequest $request): LoginResource
     {
-        throw_if(!$this->userService->checkUserCredential($request), LoginWrongCredentialException::class);
+        throw_if(!$this->userService->checkUserCredential($request->email , $request->password), LoginWrongCredentialException::class);
         $tokenResult = $this->userService->createAccessToken($request->user());
         return new LoginResource($request->user(), $tokenResult);
     }
@@ -48,7 +48,7 @@ class UserController extends Controller
      */
     public function register(RegisterRequest $request): LoginResource
     {
-        $user = $this->userService->createUser($request);
+        $user = $this->userService->createUser($request->email , $request->password);
         $token = $this->userService->createAccessToken($user);
         return new LoginResource($user, $token);
     }
@@ -62,7 +62,7 @@ class UserController extends Controller
      */
     public function forgetPassword(ForgetPasswordRequest $request): JsonResponse
     {
-        $this->userService->forgetPassword($request->get('email'));
+        $this->userService->forgetPassword($request->email);
 
         return jsonResponse(message: __('user.forgetPassword.success'));
     }

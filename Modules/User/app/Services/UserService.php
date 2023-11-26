@@ -3,20 +3,24 @@
 namespace Modules\User\app\Services;
 
 use App\Events\ForgetPassword;
+use App\Events\UserAccountBlocked;
+use App\Events\UserAccountUnblocked;
 use App\Events\UserLoggedIn;
 use App\Events\UserPasswordWasRest;
+use App\Events\UserProfileUpdated;
 use App\Events\UserRegistered;
 use App\Events\UserUpdated;
+use DateTime;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Laravel\Passport\PersonalAccessTokenResult;
 use Modules\User\app\Exceptions\LoginWrongCredentialException;
-use Modules\User\app\Http\Requests\LoginRequest;
-use Modules\User\app\Http\Requests\RegisterRequest;
-use Modules\User\app\Http\Requests\UpdateUserRequest;
+use Modules\User\app\Models\BlockedAccount;
 use Modules\User\app\Models\PasswordResetToken;
 use Modules\User\app\Models\User;
+use Modules\User\app\Models\UserProfile;
 use Throwable;
 
 /**
@@ -29,14 +33,16 @@ class UserService
     /**
      * Create a new user.
      *
-     * @param RegisterRequest $request
+     * @param string $email
+     * @param string $password
      * @return User
      */
-    public function createUser(RegisterRequest $request): User
+    public function createUser(string $email , string $password): User
     {
-        $input = $request->validated();
-        $input['password'] = bcrypt($input['password']);
-        $user = User::create($input);
+        $user = User::create([
+            'email' => $email,
+            'password' => bcrypt($password)
+        ]);
         UserRegistered::dispatch($user);
         return $user;
     }
@@ -46,17 +52,14 @@ class UserService
      * update an existing user.
      *
      * @param User $user
-     * @param UpdateUserRequest $request
+     * @param string $password
      * @return User
      */
-    public function updateUser(User $user , UpdateUserRequest $request): User
+    public function updateUser(User $user , string $password): User
     {
-        $input = $request->validated();
-
-        if (isset($input['password'])) {
-            $input['password'] = bcrypt($input['password']);
-        }
-        $user->update($input);
+        $user->update([
+            'password' => bcrypt($password)
+        ]);
         UserUpdated::dispatch($user);
         return $user;
     }
@@ -76,13 +79,16 @@ class UserService
     /**
      * Check user credentials.
      *
-     * @param LoginRequest $request
+     * @param string $email
+     * @param string $password
      * @return bool
      */
-    public function checkUserCredential(LoginRequest $request): bool
+    public function checkUserCredential(string $email, string $password): bool
     {
-        $credentials = request(['email', 'password']);
-        return Auth::attempt($credentials);
+        return Auth::attempt([
+            'email' => $email,
+            'password' => $password,
+        ]);
     }
 
     /**
@@ -116,4 +122,60 @@ class UserService
         PasswordResetToken::find($user->email)->delete();
         UserPasswordWasRest::dispatch($user);
     }
+
+    /**
+     * Block the user's account.
+     *
+     * @param User $user
+     * @param string $description
+     * @param DateTime $expired_at
+     * @return BlockedAccount
+     */
+    public function block(User $user , string $description , DateTime $expired_at): Model
+    {
+        $blockedAccount = $user->blockedAccount()->updateOrCreate(['user_id' => $user->id] ,
+            [
+                'description' => $description,
+                'expired_at' => $expired_at
+            ]);
+
+        UserAccountBlocked::dispatch($user , $blockedAccount);
+        return $blockedAccount;
+    }
+
+    /**
+     * Unblock the user's account.
+     */
+    public function unblock(User $user): User
+    {
+        $user->blockedAccount()->delete();
+        UserAccountUnblocked::dispatch($user);
+        return $user;
+    }
+
+
+    /**
+     * Update a user profile
+     *
+     * @param User $user
+     * @param string $firstName
+     * @param string $lastName
+     * @param string $mobile
+     * @param string $address
+     * @return UserProfile
+     */
+    public function updateProfile(User $user , string $firstName, string $lastName, string $mobile, string $address): UserProfile
+    {
+        $userProfile = $user->userProfile()->updateOrCreate(['user_id' => $user->id] ,
+            [
+                "first_name" => $firstName,
+                "last_name" => $lastName,
+                "mobile" => $mobile,
+                "address" => $address,
+            ]);
+        UserProfileUpdated::dispatch($userProfile);
+
+        return $userProfile;
+    }
+
 }

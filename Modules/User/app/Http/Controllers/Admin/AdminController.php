@@ -30,7 +30,7 @@ class AdminController extends Controller
     public function login(AdminLoginRequest $request): AdminLoginResource
     {
         throw_if(
-            !$this->adminService->checkAdminCredential($request),
+            !$this->adminService->checkAdminCredential($request->email , $request->password),
             LoginWrongCredentialException::class,
             __("admin.login.wrongCredential")
         );
@@ -50,7 +50,7 @@ class AdminController extends Controller
      */
     public function register(AdminRegisterRequest $request): AdminLoginResource
     {
-        $admin = $this->adminService->createAdmin($request);
+        $admin = $this->adminService->createAdmin($request->name , $request->password , $request->email);
         $token = $this->adminService->createAccessToken($admin);
         return new AdminLoginResource($admin, $token);
     }

@@ -13,7 +13,7 @@ class BlockedAccountResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name' => $this->user->name,
+            'email' => $this->user->email,
             'description' => $this->description,
             'blocked_at' => $this->created_at,
             'expired_at' => $this->expired_at,

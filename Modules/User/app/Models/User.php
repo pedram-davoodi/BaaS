@@ -53,4 +53,14 @@ class User extends Authenticatable implements UserModelInterface
     {
         return $this->hasOne(BlockedAccount::class);
     }
+
+    /**
+     * User profile if exists
+     *
+     * @return HasOne
+     */
+    public function userProfile(): HasOne
+    {
+        return $this->hasOne(UserProfile::class);
+    }
 }

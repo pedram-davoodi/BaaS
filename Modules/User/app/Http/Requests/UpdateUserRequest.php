@@ -13,7 +13,6 @@ class UpdateUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'nullable',
             'password' => 'nullable',
             'c_password' => ['same:password' , Rule::requiredIf(fn () => !empty($this->password))],
         ];

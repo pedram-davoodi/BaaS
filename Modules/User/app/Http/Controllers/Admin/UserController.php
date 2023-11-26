@@ -44,7 +44,7 @@ class UserController extends Controller
      */
     public function store(RegisterRequest $request, UserService $userService): UserResource
     {
-        return new UserResource($userService->createUser($request));
+        return new UserResource($userService->createUser($request->email , $request->password));
     }
 
     /**
