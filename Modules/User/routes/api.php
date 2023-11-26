@@ -6,6 +6,7 @@ use Modules\User\app\Http\Controllers\Admin\AdminController;
 use Modules\User\app\Http\Controllers\Admin\BlockedAccountController;
 use Modules\User\app\Http\Controllers\Admin\UserController as AdminUserController;
 use Modules\User\app\Http\Controllers\User\UserController;
+use Modules\User\app\Http\Controllers\User\UserProfileController;
 
 /*
     |--------------------------------------------------------------------------
@@ -36,6 +37,14 @@ Route::group(['prefix' => 'users-module'] , function (){
         Route::post('forget-password', [UserController::class , 'forgetPassword']);
         Route::post('check-forget-password-token', [UserController::class , 'checkForgetPasswordToken']);
         Route::put('rest-password', [UserController::class , 'resetPassword']);
+
+        Route::group(['middleware' => ['auth:api']] , function (){
+            Route::group(['prefix' => 'profile'] , function (){
+                Route::put('/' , [UserProfileController::class , 'update']);
+                Route::get('/' , [UserProfileController::class , 'show']);
+            });
+
+        });
     });
 
 });

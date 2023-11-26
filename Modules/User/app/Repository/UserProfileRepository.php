@@ -3,10 +3,9 @@
 namespace Modules\User\app\Repository;
 
 use App\Repositories\Repository;
-use Illuminate\Database\Eloquent\Model;
-use Modules\User\app\Models\User;
+use Modules\User\app\Models\UserProfile;
 
-class UserRepository extends Repository
+class UserProfileRepository extends Repository
 {
-    protected string $modelClass = User::class;
+    protected string $modelClass = UserProfile::class;
 }
