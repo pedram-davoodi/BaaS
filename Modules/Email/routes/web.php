@@ -13,7 +13,3 @@ use Modules\Email\app\Http\Controllers\EmailController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::group([], function () {
-    Route::resource('email', EmailController::class)->names('email');
-});

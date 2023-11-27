@@ -18,11 +18,11 @@ use Modules\User\app\Http\Controllers\User\UserProfileController;
     | is assigned the "api" middleware group. Enjoy building your API!
     |
 */
-Route::group(['prefix' => 'users-module'] , function (){
+Route::group(['prefix' => 'users-module' , 'as' => 'users.'] , function (){
 
-    Route::group(['prefix' => 'admin'] , function (){
-        Route::post('login', [AdminController::class , 'login']);
-        Route::post('register', [AdminController::class , 'register']);
+    Route::group(['prefix' => 'admin' , 'as' => 'admin.'] , function (){
+        Route::post('login', [AdminController::class , 'login'])->name('login');
+        Route::post('register', [AdminController::class , 'register'])->name('register');
 
         Route::group(['middleware' => ['auth:api-admin']] , function (){
             Route::resource('users' , AdminUserController::class);
@@ -31,19 +31,18 @@ Route::group(['prefix' => 'users-module'] , function (){
 
     });
 
-    Route::group(['prefix' => 'user'] , function (){
-        Route::post('login', [UserController::class , 'login']);
-        Route::post('register', [UserController::class , 'register']);
-        Route::post('forget-password', [UserController::class , 'forgetPassword']);
-        Route::post('check-forget-password-token', [UserController::class , 'checkForgetPasswordToken']);
-        Route::put('rest-password', [UserController::class , 'resetPassword']);
+    Route::group(['prefix' => 'user' , 'as' => 'user.'] , function (){
+        Route::post('login', [UserController::class , 'login'])->name('login');
+        Route::post('register', [UserController::class , 'register'])->name('register');
+        Route::post('forget-password', [UserController::class , 'forgetPassword'])->name('forgetPassword');
+        Route::post('check-forget-password-token', [UserController::class , 'checkForgetPasswordToken'])->name('checkForgetPasswordToken');
+        Route::put('rest-password', [UserController::class , 'resetPassword'])->name('resetPassword');
 
         Route::group(['middleware' => ['auth:api']] , function (){
-            Route::group(['prefix' => 'profile'] , function (){
-                Route::put('/' , [UserProfileController::class , 'update']);
-                Route::get('/' , [UserProfileController::class , 'show']);
+            Route::group(['prefix' => 'profile' , 'as' => 'profile.'] , function (){
+                Route::put('/' , [UserProfileController::class , 'update'])->name('update');
+                Route::get('/' , [UserProfileController::class , 'show'])->name('show');
             });
-
         });
     });
 

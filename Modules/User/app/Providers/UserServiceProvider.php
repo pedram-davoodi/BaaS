@@ -2,10 +2,11 @@
 
 namespace Modules\User\app\Providers;
 
-use Illuminate\Support\Facades\Blade;
+use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\ServiceProvider;
 use Modules\User\app\Services\AdminService;
 use Modules\User\app\Services\UserService;
+use Modules\User\database\factories\UserFactory;
 
 class UserServiceProvider extends ServiceProvider
 {
@@ -23,6 +24,10 @@ class UserServiceProvider extends ServiceProvider
         $this->registerTranslations();
         $this->registerConfig();
         $this->loadMigrationsFrom(module_path($this->moduleName, 'database/migrations'));
+        Factory::guessModelNamesUsing(function ($name) {
+            return 'Modules\User\app\Models\\'. (str_replace('Factory' , '' , class_basename($name)));
+        });
+
     }
 
     /**
@@ -33,6 +38,7 @@ class UserServiceProvider extends ServiceProvider
         $this->app->register(RouteServiceProvider::class);
         $this->app->singleton(UserService::class , fn() => new UserService());
         $this->app->singleton(AdminService::class , fn() => new AdminService());
+
     }
 
     /**
