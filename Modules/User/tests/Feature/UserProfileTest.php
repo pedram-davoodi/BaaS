@@ -2,10 +2,10 @@
 
 namespace Modules\User\tests\Feature;
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Modules\User\app\Models\User;
 use Modules\User\app\Services\UserService;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class UserProfileTest extends TestCase
 {
@@ -23,27 +23,28 @@ class UserProfileTest extends TestCase
             'password' => '123456',
         ]);
         $token = (new UserService())->createAccessToken($this->user)->accessToken;
-        $this->headers['Authorization'] = "Bearer " .$token;
+        $this->headers['Authorization'] = 'Bearer '.$token;
     }
+
     private array $headers = ['accept' => 'application/json'];
 
     public function test_user_profile_update_success()
     {
         $response = $this->withHeaders($this->headers)
-            ->put(route('users.user.profile.update') , [
+            ->put(route('users.user.profile.update'), [
                 'first_name' => 'Ali',
                 'last_name' => 'Davoodi',
                 'mobile' => '09307718864',
                 'address' => 'Mashhad',
             ]);
 
-        $response->assertStatus(201)->assertSee('data' , 'first_name');
+        $response->assertStatus(201)->assertSee('data', 'first_name');
     }
 
     public function test_user_profile_update_failed()
     {
         $response = $this->withHeaders($this->headers)
-            ->put(route('users.user.profile.update') , [
+            ->put(route('users.user.profile.update'), [
                 'first_name' => 'Ali',
                 'last_name' => 'Davoodi',
                 'mobile' => '09307718864',
@@ -58,7 +59,7 @@ class UserProfileTest extends TestCase
             'first_name' => 'Ali',
             'last_name' => 'Davoodi',
             'mobile' => '09307718864',
-            'address' => 'Mashhad'
+            'address' => 'Mashhad',
         ]);
 
         $response = $this->withHeaders($this->headers)
