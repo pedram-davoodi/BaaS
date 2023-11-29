@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('to');
             $table->json('cc')->nullable();
             $table->json('bcc')->nullable();
-            $table->enum('status' , ['Pending' , 'Sending' , 'Sent' , 'Failed']);
+            $table->enum('status', ['Pending', 'Sending', 'Sent', 'Failed']);
             $table->longText('body');
             $table->timestamps();
         });

@@ -9,4 +9,5 @@ namespace App\ModelInterfaces;
  * @property string address
  */
 interface UserProfileModelInterface
-{}
+{
+}

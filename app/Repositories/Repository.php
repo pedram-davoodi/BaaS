@@ -9,6 +9,7 @@ use Illuminate\Support\Collection;
 abstract class Repository implements RepositoryInterface
 {
     protected Model $model;
+
     protected string $modelClass;
 
     public function __construct()
@@ -16,19 +17,11 @@ abstract class Repository implements RepositoryInterface
         $this->model = app($this->modelClass);
     }
 
-    /**
-     * @param $id
-     * @return Model|null
-     */
     public function getOneById($id): ?Model
     {
         return $this->model->find($id);
     }
 
-    /**
-     * @param array $ids
-     * @return Collection
-     */
     public function getByIds(array $ids): Collection
     {
         return $this->model->find($ids);
@@ -42,27 +35,16 @@ abstract class Repository implements RepositoryInterface
         return $this->model->all();
     }
 
-    /**
-     * @param int $paginate
-     * @return LengthAwarePaginator
-     */
     public function paginate(int $paginate): LengthAwarePaginator
     {
         return $this->model->paginate($paginate);
     }
 
-    /**
-     * @param ...$params
-     * @return Model|null
-     */
     public function getFirstWhere(...$params): ?Model
     {
         return $this->model->firstWhere(...$params);
     }
 
-    /**
-     * @return string
-     */
     public function getModelClass(): string
     {
         return $this->modelClass;

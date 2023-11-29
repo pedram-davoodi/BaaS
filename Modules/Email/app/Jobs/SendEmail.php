@@ -25,7 +25,7 @@ class SendEmail implements ShouldQueue
     public function handle(): void
     {
         $this->email->update([
-            'status' => "Sending"
+            'status' => 'Sending',
         ]);
     }
 }

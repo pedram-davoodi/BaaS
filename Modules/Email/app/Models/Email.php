@@ -14,5 +14,4 @@ class Email extends Model implements EmailModelInterface
      * The attributes that are mass assignable.
      */
     protected $guarded = [];
-
 }

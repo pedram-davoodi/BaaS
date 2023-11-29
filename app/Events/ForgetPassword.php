@@ -14,7 +14,7 @@ class ForgetPassword
     /**
      * Create a new event instance.
      */
-    public function __construct(public UserModelInterface $user ,public string $token)
+    public function __construct(public UserModelInterface $user, public string $token)
     {
     }
 }

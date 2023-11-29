@@ -7,20 +7,17 @@ use DateTime;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Modules\User\app\Http\Requests\StoreBlockedAccountRequest;
-use \Modules\User\app\Services\UserService;
 use Modules\User\app\Models\BlockedAccount;
 use Modules\User\app\Models\User;
 use Modules\User\app\Repository\BlockedAccountRepository;
 use Modules\User\app\Resources\BlockedAccountCollection;
 use Modules\User\app\Resources\BlockedAccountResource;
+use Modules\User\app\Services\UserService;
 
 class BlockedAccountController extends Controller
 {
     /**
      * Display a listing of blocked accounts.
-     *
-     * @param BlockedAccountRepository $blockedAccountRepository
-     * @return BlockedAccountCollection
      */
     public function index(BlockedAccountRepository $blockedAccountRepository): BlockedAccountCollection
     {
@@ -30,12 +27,9 @@ class BlockedAccountController extends Controller
     /**
      * Store a newly created blocked account.
      *
-     * @param StoreBlockedAccountRequest $request
-     * @param UserService $service
-     * @return BlockedAccountResource
      * @throws Exception
      */
-    public function store(StoreBlockedAccountRequest $request , UserService $service): BlockedAccountResource
+    public function store(StoreBlockedAccountRequest $request, UserService $service): BlockedAccountResource
     {
         $blockedAccount = $service->block(
             User::find($request->user_id),
@@ -48,15 +42,11 @@ class BlockedAccountController extends Controller
 
     /**
      * Remove the specified blocked account.
-     *
-     * @param BlockedAccount $blockedAccount
-     * @param UserService $service
-     * @return JsonResponse
      */
-    public function destroy(BlockedAccount $blockedAccount , UserService $service): JsonResponse
+    public function destroy(BlockedAccount $blockedAccount, UserService $service): JsonResponse
     {
         $service->unblock(User::find($blockedAccount->user_id));
 
-        return jsonResponse(message:__('admin.user.unblocked'));
+        return jsonResponse(message: __('admin.user.unblocked'));
     }
 }

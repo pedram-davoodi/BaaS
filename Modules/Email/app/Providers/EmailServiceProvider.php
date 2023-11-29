@@ -2,7 +2,6 @@
 
 namespace Modules\Email\app\Providers;
 
-use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 
 class EmailServiceProvider extends ServiceProvider
@@ -70,7 +69,6 @@ class EmailServiceProvider extends ServiceProvider
         $this->publishes([module_path($this->moduleName, 'config/config.php') => config_path($this->moduleNameLower.'.php')], 'config');
         $this->mergeConfigFrom(module_path($this->moduleName, 'config/config.php'), $this->moduleNameLower);
     }
-
 
     /**
      * Get the services provided by the provider.

@@ -15,5 +15,7 @@ class UserAccountBlocked
     /**
      * Create a new event instance.
      */
-    public function __construct(public UserModelInterface $user , public BlockedAccountModelInterface $blockedAccount){}
+    public function __construct(public UserModelInterface $user, public BlockedAccountModelInterface $blockedAccount)
+    {
+    }
 }

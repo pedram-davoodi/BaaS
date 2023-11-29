@@ -8,9 +8,11 @@ use Illuminate\Contracts\Validation\ValidatorAwareRule;
 use Illuminate\Validation\Validator;
 use Modules\User\app\Models\PasswordResetToken;
 
-class ForgetPasswordTokenBelongsToEmailRule implements ValidationRule,ValidatorAwareRule
+class ForgetPasswordTokenBelongsToEmailRule implements ValidationRule, ValidatorAwareRule
 {
-    public function __construct(protected ?string $email){}
+    public function __construct(protected ?string $email)
+    {
+    }
 
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
@@ -18,7 +20,7 @@ class ForgetPasswordTokenBelongsToEmailRule implements ValidationRule,ValidatorA
             ->where('token', $value)
             ->exists();
 
-        if (!$tokenExists) {
+        if (! $tokenExists) {
             $fail(__('user.restPassword.invalidToken'));
         }
     }
@@ -26,6 +28,7 @@ class ForgetPasswordTokenBelongsToEmailRule implements ValidationRule,ValidatorA
     public function setValidator(Validator $validator)
     {
         $this->validator = $validator;
+
         return $this;
     }
 }

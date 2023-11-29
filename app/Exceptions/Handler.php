@@ -2,7 +2,6 @@
 
 namespace App\Exceptions;
 
-use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -30,7 +29,7 @@ class Handler extends ExceptionHandler
         $this->renderable(function (NotFoundHttpException $e, $request) {
             if ($request->is('api/*')) {
                 return response()->json([
-                    'message' => 'Record not found.'
+                    'message' => 'Record not found.',
                 ], 404);
             }
         });
@@ -39,9 +38,7 @@ class Handler extends ExceptionHandler
     /**
      * Render an exception into an HTTP response.
      *
-     * @param Request $request
-     * @param Throwable $e
-     * @return Response
+     * @param  Request  $request
      *
      * @throws Throwable
      */
@@ -50,6 +47,7 @@ class Handler extends ExceptionHandler
         if ($request->wantsJson() and $e instanceof CustomException) {
             return $e->getResponse();
         }
+
         return parent::render($request, $e);
     }
 }

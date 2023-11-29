@@ -14,34 +14,25 @@ class UserProfileController extends Controller
 {
     /**
      * Show the user profile resource.
-     *
-     * @param UserProfileRepository $repository
-     * @return ProfileResource
      */
     public function show(UserProfileRepository $repository): ProfileResource
     {
-        return new ProfileResource($repository->getFirstWhere('user_id' , Auth::guard('api')->id()));
+        return new ProfileResource($repository->getFirstWhere('user_id', Auth::guard('api')->id()));
     }
-
 
     /**
      * Update the user profile in storage.
-     *
-     * @param UpdateUserProfileRequest $request
-     * @param UserService $service
-     * @return ProfileResource
      */
-    public function update(UpdateUserProfileRequest $request , UserService $service): ProfileResource
+    public function update(UpdateUserProfileRequest $request, UserService $service): ProfileResource
     {
         return new ProfileResource(
             $service->updateProfile(
-            User::find(Auth::guard('api')->id()),
-            $request->first_name,
-            $request->last_name,
-            $request->mobile,
-            $request->address
+                User::find(Auth::guard('api')->id()),
+                $request->first_name,
+                $request->last_name,
+                $request->mobile,
+                $request->address
             )
         );
     }
-
 }

@@ -24,8 +24,8 @@ class NotifyUsersOfForgetPasswordToken
         $email = Email::create([
             'subject' => 'Forget Password',
             'to' => $event->user->email,
-            'status' => 'Pending' ,
-            'body' => "Your token is : {$event->token}"
+            'status' => 'Pending',
+            'body' => "Your token is : {$event->token}",
         ]);
         SendEmail::dispatch($email)->onQueue('highPriority');
     }

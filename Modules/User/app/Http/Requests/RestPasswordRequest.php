@@ -13,8 +13,8 @@ class RestPasswordRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => ['required','email'],
-            'token' => ['required','string','exists:password_reset_tokens,token',new ForgetPasswordTokenBelongsToEmailRule($this->email)],
+            'email' => ['required', 'email'],
+            'token' => ['required', 'string', 'exists:password_reset_tokens,token', new ForgetPasswordTokenBelongsToEmailRule($this->email)],
             'password' => 'required',
             'c_password' => 'required|same:password',
         ];

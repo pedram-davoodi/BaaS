@@ -47,8 +47,6 @@ class User extends Authenticatable implements UserModelInterface
 
     /**
      * Blocked account if exists
-     *
-     * @return HasOne
      */
     public function blockedAccount(): HasOne
     {
@@ -57,8 +55,6 @@ class User extends Authenticatable implements UserModelInterface
 
     /**
      * User profile if exists
-     *
-     * @return HasOne
      */
     public function userProfile(): HasOne
     {

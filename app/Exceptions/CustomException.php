@@ -9,15 +9,11 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
  * Class CustomException
  *
  * Abstract base exception class for custom exceptions.
- *
- * @package App\Exceptions
  */
 abstract class CustomException extends HttpException
 {
     /**
      * Get the JSON response for the exception.
-     *
-     * @return JsonResponse
      */
     public function getResponse(): JsonResponse
     {

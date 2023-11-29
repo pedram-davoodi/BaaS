@@ -15,7 +15,7 @@ class StoreBlockedAccountRequest extends FormRequest
         return [
             'user_id' => 'required|exists:users,id',
             'description' => 'required|string',
-            'expired_at' => ['nullable' , new ValidDateTimeFormat , 'after:now'],
+            'expired_at' => ['nullable', new ValidDateTimeFormat, 'after:now'],
         ];
     }
 

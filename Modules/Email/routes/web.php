@@ -1,8 +1,5 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use Modules\Email\app\Http\Controllers\EmailController;
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes

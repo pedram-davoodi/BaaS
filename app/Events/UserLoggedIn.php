@@ -2,11 +2,11 @@
 
 namespace App\Events;
 
+use App\ModelInterfaces\UserModelInterface;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use App\ModelInterfaces\UserModelInterface;
 
 class UserLoggedIn implements ShouldQueue
 {

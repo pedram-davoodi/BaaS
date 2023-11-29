@@ -3,8 +3,6 @@
 namespace Modules\Email\app\Providers;
 
 use App\Events\ForgetPassword;
-use Illuminate\Auth\Events\Registered;
-use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Modules\Email\app\Listeners\NotifyUsersOfForgetPasswordToken;
 

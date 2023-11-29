@@ -7,6 +7,6 @@ namespace App\ModelInterfaces;
  * @property string $expired_at
  * @property string $created_at
  */
-Interface BlockedAccountModelInterface
+interface BlockedAccountModelInterface
 {
 }

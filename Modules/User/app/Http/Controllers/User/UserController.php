@@ -19,45 +19,40 @@ use Throwable;
 
 /**
  * Class UserController
- *
- * @package Modules\User\app\Http\Controllers\User
  */
 class UserController extends Controller
 {
-    public function __construct(public UserService $userService){}
+    public function __construct(public UserService $userService)
+    {
+    }
 
     /**
      * Handles user logins.
      *
-     * @param LoginRequest $request
-     * @return LoginResource
      * @throws Throwable
      */
     public function login(LoginRequest $request): LoginResource
     {
-        throw_if(!$this->userService->checkUserCredential($request->email , $request->password), LoginWrongCredentialException::class);
+        throw_if(! $this->userService->checkUserCredential($request->email, $request->password), LoginWrongCredentialException::class);
         $tokenResult = $this->userService->createAccessToken($request->user());
+
         return new LoginResource($request->user(), $tokenResult);
     }
 
     /**
      * Register API.
-     *
-     * @param RegisterRequest $request
-     * @return LoginResource
      */
     public function register(RegisterRequest $request): LoginResource
     {
-        $user = $this->userService->createUser($request->email , $request->password);
+        $user = $this->userService->createUser($request->email, $request->password);
         $token = $this->userService->createAccessToken($user);
+
         return new LoginResource($user, $token);
     }
 
     /**
      * Initiate the forget password process.
      *
-     * @param ForgetPasswordRequest $request
-     * @return JsonResponse
      * @throws Throwable
      */
     public function forgetPassword(ForgetPasswordRequest $request): JsonResponse
@@ -70,14 +65,14 @@ class UserController extends Controller
     /**
      * Check the validity of a forget password token against the provided email.
      *
-     * @param Request $request The incoming request.
+     * @param  Request  $request The incoming request.
      * @return JsonResponse The JSON response indicating token validity.
      */
     public function checkForgetPasswordToken(Request $request): JsonResponse
     {
-        $validator = Validator::make($request->toArray() , [
+        $validator = Validator::make($request->toArray(), [
             'email' => 'required|string|email',
-            'token' => ['required' , new ForgetPasswordTokenBelongsToEmailRule($request->get('email'))],
+            'token' => ['required', new ForgetPasswordTokenBelongsToEmailRule($request->get('email'))],
         ]);
 
         return jsonResponse(data: ['valid' => $validator->passes()]);
@@ -85,14 +80,11 @@ class UserController extends Controller
 
     /**
      * Reset user's password.
-     *
-     * @param RestPasswordRequest $request
-     * @return JsonResponse
      */
     public function resetPassword(RestPasswordRequest $request): JsonResponse
     {
-        $user = User::firstWhere('email' , $request->get('email'));
-        $this->userService->resetPassword($user , $request->get('password'));
+        $user = User::firstWhere('email', $request->get('email'));
+        $this->userService->resetPassword($user, $request->get('password'));
 
         return jsonResponse(message: __('user.resetPassword.success'));
     }

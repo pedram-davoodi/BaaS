@@ -15,9 +15,6 @@ class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @param UserRepository $repository
-     * @return UserCollection
      */
     public function index(UserRepository $repository): UserCollection
     {
@@ -26,9 +23,6 @@ class UserController extends Controller
 
     /**
      * Display a specific user.
-     *
-     * @param User $user
-     * @return UserResource
      */
     public function show(User $user): UserResource
     {
@@ -37,23 +31,14 @@ class UserController extends Controller
 
     /**
      * Store a newly created user in storage.
-     *
-     * @param RegisterRequest $request
-     * @param UserService $userService
-     * @return UserResource
      */
     public function store(RegisterRequest $request, UserService $userService): UserResource
     {
-        return new UserResource($userService->createUser($request->email , $request->password));
+        return new UserResource($userService->createUser($request->email, $request->password));
     }
 
     /**
      * Update the specified user in storage.
-     *
-     * @param User $user
-     * @param UpdateUserRequest $request
-     * @param UserService $userService
-     * @return UserResource
      */
     public function update(User $user, UpdateUserRequest $request, UserService $userService): UserResource
     {

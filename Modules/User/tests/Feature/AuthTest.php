@@ -14,7 +14,9 @@ use Tests\TestCase;
 class AuthTest extends TestCase
 {
     use RefreshDatabase;
+
     private User $user;
+
     private array $headers = ['accept' => 'application/json'];
 
     public function setUp(): void
@@ -24,15 +26,15 @@ class AuthTest extends TestCase
         $this->artisan('passport:install');
         $this->user = User::factory()->create([
             'email' => 'test@test.com',
-            'password' => '123456'
+            'password' => '123456',
         ]);
     }
 
     public function test_login_success(): void
     {
-        $response = $this->post(route('users.user.login') , [
+        $response = $this->post(route('users.user.login'), [
             'email' => 'test@test.com',
-            'password' => '123456'
+            'password' => '123456',
         ]);
         $response->assertOk();
         $response->assertSee('token');
@@ -42,9 +44,9 @@ class AuthTest extends TestCase
     {
         $response = $this
             ->withHeaders($this->headers)
-            ->post(route('users.user.login') , [
+            ->post(route('users.user.login'), [
                 'email' => 'test@test.com',
-                'password' => '1234556'
+                'password' => '1234556',
             ]);
 
         $response->assertStatus(401);
@@ -54,23 +56,23 @@ class AuthTest extends TestCase
     public function test_register_success()
     {
         $response = $this->withHeaders($this->headers)
-            ->post(route('users.user.register') , [
+            ->post(route('users.user.register'), [
                 'email' => 'ali@ali.com',
-                'password' => "123456",
-                'c_password' => "123456"
+                'password' => '123456',
+                'c_password' => '123456',
             ]);
 
         $response->assertOk();
-        $response->assertSee(['data' , 'token']);
+        $response->assertSee(['data', 'token']);
     }
 
     public function test_register_fails()
     {
         $response = $this->withHeaders($this->headers)
-            ->post(route('users.user.register') , [
+            ->post(route('users.user.register'), [
                 'email' => 'ali@ali.com',
-                'password' => "1234546",
-                'c_password' => "123456"
+                'password' => '1234546',
+                'c_password' => '123456',
             ]);
 
         $response->assertJsonValidationErrors('c_password');
@@ -79,7 +81,7 @@ class AuthTest extends TestCase
     public function test_forget_password_success()
     {
         $response = $this->withHeaders($this->headers)
-            ->post(route('users.user.forgetPassword') , [
+            ->post(route('users.user.forgetPassword'), [
                 'email' => $this->user->email,
             ]);
         $response->assertOk();
@@ -89,8 +91,8 @@ class AuthTest extends TestCase
     public function test_forget_password_fails()
     {
         $response = $this->withHeaders($this->headers)
-            ->post(route('users.user.forgetPassword') , [
-                'email' => $this->user->email."a",
+            ->post(route('users.user.forgetPassword'), [
+                'email' => $this->user->email.'a',
             ]);
         $response->assertOk();
         $response->assertSee('message');
@@ -100,7 +102,7 @@ class AuthTest extends TestCase
     {
 
         $response = $this->withHeaders($this->headers)
-            ->post(route('users.user.forgetPassword') , [
+            ->post(route('users.user.forgetPassword'), [
                 'email' => $this->user->email,
             ]);
         $response->assertOk();
@@ -109,21 +111,21 @@ class AuthTest extends TestCase
         $token = PasswordResetToken::first();
 
         $response = $this->withHeaders($this->headers)
-            ->post(route('users.user.checkForgetPasswordToken') , [
-                'email' => $this->user->email ,
-                'token' => $token->token
+            ->post(route('users.user.checkForgetPasswordToken'), [
+                'email' => $this->user->email,
+                'token' => $token->token,
             ]);
 
         $response->assertOk();
-        $response->assertSee(['data' , 'valid']);
-        $this->assertEquals(true , json_decode($response->getContent() , true)['data']['valid']);
+        $response->assertSee(['data', 'valid']);
+        $this->assertEquals(true, json_decode($response->getContent(), true)['data']['valid']);
     }
 
     public function test_check_forget_password_token_fail()
     {
 
         $response = $this->withHeaders($this->headers)
-            ->post(route('users.user.forgetPassword') , [
+            ->post(route('users.user.forgetPassword'), [
                 'email' => $this->user->email,
             ]);
         $response->assertOk();
@@ -132,20 +134,20 @@ class AuthTest extends TestCase
         $token = PasswordResetToken::first();
 
         $response = $this->withHeaders($this->headers)
-            ->post(route('users.user.checkForgetPasswordToken') , [
-                'email' => $this->user->email ,
-                'token' => $token->token . 'A'
+            ->post(route('users.user.checkForgetPasswordToken'), [
+                'email' => $this->user->email,
+                'token' => $token->token.'A',
             ]);
 
         $response->assertOk();
-        $response->assertSee(['data' , 'valid']);
-        $this->assertEquals(false , json_decode($response->getContent() , true)['data']['valid']);
+        $response->assertSee(['data', 'valid']);
+        $this->assertEquals(false, json_decode($response->getContent(), true)['data']['valid']);
     }
 
     public function test_reset_password_success()
     {
         $response = $this->withHeaders($this->headers)
-            ->post(route('users.user.forgetPassword') , [
+            ->post(route('users.user.forgetPassword'), [
                 'email' => $this->user->email,
             ]);
         $response->assertOk();
@@ -154,22 +156,22 @@ class AuthTest extends TestCase
         $token = PasswordResetToken::first();
 
         $response = $this->withHeaders($this->headers)
-            ->put(route('users.user.resetPassword') , [
-                'email' => $this->user->email ,
+            ->put(route('users.user.resetPassword'), [
+                'email' => $this->user->email,
                 'token' => $token->token,
                 'password' => '123456789',
-                'c_password' => '123456789'
+                'c_password' => '123456789',
             ]);
 
         $response->assertOk();
         $response->assertSee('message');
-        $this->assertTrue(Hash::check( '123456789' , User::first()->password));
+        $this->assertTrue(Hash::check('123456789', User::first()->password));
     }
 
     public function test_reset_password_fails()
     {
         $response = $this->withHeaders($this->headers)
-            ->post(route('users.user.forgetPassword') , [
+            ->post(route('users.user.forgetPassword'), [
                 'email' => $this->user->email,
             ]);
         $response->assertOk();
@@ -178,15 +180,15 @@ class AuthTest extends TestCase
         $token = PasswordResetToken::first();
 
         $response = $this->withHeaders($this->headers)
-            ->put(route('users.user.resetPassword') , [
-                'email' => $this->user->email ,
+            ->put(route('users.user.resetPassword'), [
+                'email' => $this->user->email,
                 'token' => $token->token,
                 'password' => '1234567891',
-                'c_password' => '123456789'
+                'c_password' => '123456789',
             ]);
 
         $response->assertJsonValidationErrors('c_password');
         $response->assertSee('message');
-        $this->assertTrue(Hash::check( '123456' , User::first()->password));
+        $this->assertTrue(Hash::check('123456', User::first()->password));
     }
 }

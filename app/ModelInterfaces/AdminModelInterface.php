@@ -2,6 +2,6 @@
 
 namespace App\ModelInterfaces;
 
-Interface AdminModelInterface
+interface AdminModelInterface
 {
 }
