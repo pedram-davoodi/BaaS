@@ -5,7 +5,6 @@ namespace Modules\User\tests\Feature;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Modules\User\app\Models\User;
 use Modules\User\app\Services\UserService;
-use Tests\TestCase;
 
 class UserProfileTest extends TestCase
 {
@@ -16,8 +15,6 @@ class UserProfileTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->seed();
-        $this->artisan('passport:install');
         $this->user = User::factory()->create([
             'email' => 'test@test.com',
             'password' => '123456',
@@ -26,12 +23,10 @@ class UserProfileTest extends TestCase
         $this->headers['Authorization'] = 'Bearer '.$token;
     }
 
-    private array $headers = ['accept' => 'application/json'];
-
-    public function test_user_profile_update_success()
+    public function test_user_profiles_update_success()
     {
         $response = $this->withHeaders($this->headers)
-            ->put(route('users.user.profile.update'), [
+            ->put(route('user.user.profiles.update'), [
                 'first_name' => 'Ali',
                 'last_name' => 'Davoodi',
                 'mobile' => '09307718864',
@@ -41,10 +36,10 @@ class UserProfileTest extends TestCase
         $response->assertStatus(201)->assertSee('data', 'first_name');
     }
 
-    public function test_user_profile_update_failed()
+    public function test_user_profiles_update_failed()
     {
         $response = $this->withHeaders($this->headers)
-            ->put(route('users.user.profile.update'), [
+            ->put(route('user.user.profiles.update'), [
                 'first_name' => 'Ali',
                 'last_name' => 'Davoodi',
                 'mobile' => '09307718864',
@@ -53,7 +48,7 @@ class UserProfileTest extends TestCase
         $response->assertJsonValidationErrors('address');
     }
 
-    public function test_user_profile_show()
+    public function test_user_profiles_show()
     {
         $this->user->userProfile()->create([
             'first_name' => 'Ali',
@@ -63,7 +58,7 @@ class UserProfileTest extends TestCase
         ]);
 
         $response = $this->withHeaders($this->headers)
-            ->get(route('users.user.profile.show'));
+            ->get(route('user.user.profiles.show'));
 
         $response->assertSee('data')->assertOk();
     }
