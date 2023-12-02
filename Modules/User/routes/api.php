@@ -24,7 +24,7 @@ Route::group(['prefix' => 'users-module', 'as' => 'user.'], function () {
         Route::post('register', [AdminController::class, 'register'])->name('admins.register');
 
         Route::group(['middleware' => ['auth:api-admin']], function () {
-            Route::resource('users', AdminUserController::class);
+            Route::resource('users', AdminUserController::class)->only(['update' , 'store' , 'show' , 'index']);
             Route::resource('blocked-accounts', BlockedAccountController::class)->only(['store', 'index', 'destroy']);
         });
 
