@@ -7,6 +7,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 class TestCase extends \Tests\TestCase
 {
     use RefreshDatabase;
+
     protected array $headers = ['accept' => 'application/json'];
 
     public function setUp(): void
