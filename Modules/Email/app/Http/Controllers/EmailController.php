@@ -3,7 +3,6 @@
 namespace Modules\Email\app\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Repositories\UserRepositoryInterface;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
@@ -12,12 +11,8 @@ class EmailController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(UserRepositoryInterface $r)
+    public function index()
     {
-
-        dump($r->getAll());
-        exit;
-
         return view('email::index');
     }
 
