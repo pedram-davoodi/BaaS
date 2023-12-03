@@ -17,22 +17,19 @@ abstract class Repository implements RepositoryInterface
         $this->model = app($this->modelClass);
     }
 
-    public function getOneById($id): ?Model
+    public function getOneById($id): ?array
     {
-        return $this->model->find($id);
+        return $this->model->find($id)->first()?->toArray();
     }
 
-    public function getByIds(array $ids): Collection
+    public function getByIds(array $ids): array
     {
-        return $this->model->find($ids);
+        return $this->model->find($ids)?->toArray();
     }
 
-    /**
-     * @return Collection|
-     */
-    public function getAll(): Collection
+    public function getAll(): array
     {
-        return $this->model->all();
+        return $this->model->all()?->toArray();
     }
 
     public function paginate(int $paginate): LengthAwarePaginator

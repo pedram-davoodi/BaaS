@@ -8,11 +8,9 @@ use Illuminate\Support\Collection;
 
 interface RepositoryInterface
 {
-    public function getOneById($id): ?Model;
+    public function getOneById($id): ?array;
 
-    public function getByIds(array $ids): Collection;
+    public function getByIds(array $ids): array;
 
-    public function getAll(): Collection;
-
-    public function paginate(int $paginate): LengthAwarePaginator;
+    public function getAll(): array;
 }

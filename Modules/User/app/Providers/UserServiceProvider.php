@@ -35,6 +35,8 @@ class UserServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->register(RouteServiceProvider::class);
+        $this->app->register(RepositoryServiceProvider::class);
+
         $this->app->singleton(UserService::class, fn () => new UserService());
         $this->app->singleton(AdminService::class, fn () => new AdminService());
 
