@@ -10,5 +10,3 @@
     | is assigned the "api" middleware group. Enjoy building your API!
     |
 */
-
-\Illuminate\Support\Facades\Route::get('/a', [\Modules\Email\app\Http\Controllers\EmailController::class, 'index']);
