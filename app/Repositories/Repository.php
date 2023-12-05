@@ -24,12 +24,12 @@ abstract class Repository implements RepositoryInterface
 
     public function getByIds(array $ids): ?Collection
     {
-        return $this->model->find($ids)?->map(fn($item) => collect($item->toArray()));
+        return $this->model->find($ids)?->map(fn ($item) => collect($item->toArray()));
     }
 
     public function getAll(): ?Collection
     {
-        return $this->model->all()?->map(fn($item) => collect($item->toArray()));
+        return $this->model->all()?->map(fn ($item) => collect($item->toArray()));
     }
 
     public function paginate(int $paginate): LengthAwarePaginator

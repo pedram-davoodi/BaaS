@@ -18,19 +18,16 @@ class AppServiceProvider extends ServiceProvider
 
     /**
      * Bootstrap any application services.
-     *
-     * @return void
      */
     public function boot(): void
     {
         /**
          * Custom macro to perform joining between two collections based on specified keys.
          *
-         * @param Collection $collection The collection to join with.
-         * @param string $firstKey The key in the main collection to compare.
-         * @param string $secondKey The key in the secondary collection to compare.
-         * @param string $attrName The attribute name to add from the secondary collection.
-         *
+         * @param  Collection  $collection The collection to join with.
+         * @param  string  $firstKey The key in the main collection to compare.
+         * @param  string  $secondKey The key in the secondary collection to compare.
+         * @param  string  $attrName The attribute name to add from the secondary collection.
          * @return Collection The combined collection after joining.
          */
         Collection::macro('joinCollections', function ($collection, $firstKey, $secondKey, $attrName) {
