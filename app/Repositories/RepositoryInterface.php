@@ -2,11 +2,13 @@
 
 namespace App\Repositories;
 
+use Illuminate\Support\Collection;
+
 interface RepositoryInterface
 {
-    public function getOneById($id): ?array;
+    public function getOneById($id): ?Collection;
 
-    public function getByIds(array $ids): array;
+    public function getByIds(array $ids): ?Collection;
 
-    public function getAll(): array;
+    public function getAll(): ?Collection;
 }

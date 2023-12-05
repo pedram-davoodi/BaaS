@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection;
 
 abstract class Repository implements RepositoryInterface
 {
@@ -16,19 +17,19 @@ abstract class Repository implements RepositoryInterface
         $this->model = app($this->modelClass);
     }
 
-    public function getOneById($id): ?array
+    public function getOneById($id): ?Collection
     {
-        return $this->model->find($id)->first()?->toArray();
+        return collect($this->model->find($id)->first()?->toArray());
     }
 
-    public function getByIds(array $ids): array
+    public function getByIds(array $ids): ?Collection
     {
-        return $this->model->find($ids)?->toArray();
+        return $this->model->find($ids)?->map(fn($item) => collect($item->toArray()));
     }
 
-    public function getAll(): array
+    public function getAll(): ?Collection
     {
-        return $this->model->all()?->toArray();
+        return $this->model->all()?->map(fn($item) => collect($item->toArray()));
     }
 
     public function paginate(int $paginate): LengthAwarePaginator

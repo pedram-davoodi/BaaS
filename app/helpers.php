@@ -26,28 +26,3 @@ if (!function_exists('jsonResponse')) {
     }
 
 }
-
-if (!function_exists('arrayJoin')) {
-    /**
-     * Joins two arrays based on specified keys and returns a combined array.
-     *
-     * @param array $array1 First array to be joined.
-     * @param array $array2 Second array to be joined.
-     * @param string $firstKey Key from the first array to compare.
-     * @param string $secondKey Key from the second array to compare.
-     * @param string $attrName Name for the attribute added from the second array.
-     */
-    function arrayJoin(array $array1, array $array2, string $firstKey, string $secondKey, string $attrName): array
-    {
-        $combinedArray = [];
-        foreach ($array1 as $item1) {
-            foreach ($array2 as $item2) {
-                if ($item1[$firstKey] === $item2[$secondKey]) {
-                    $combinedArray[] = array_merge($item1, [$attrName => $item2]);
-                }
-            }
-        }
-
-        return $combinedArray;
-    }
-}
