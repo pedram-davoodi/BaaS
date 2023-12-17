@@ -43,5 +43,26 @@ class AppServiceProvider extends ServiceProvider
 
             return $combinedCollection;
         });
+
+        Collection::macro('leftJoinCollections', function ($collection, $firstKey, $secondKey, $attrName) {
+            $combinedCollection = new Collection();
+
+            foreach ($this as $item1) {
+                $matched = false;
+                foreach ($collection as $item2) {
+                    if ($item1[$firstKey] === $item2[$secondKey]) {
+                        $combinedCollection->add(collect($item1)->merge([$attrName => collect($item2)]));
+                        $matched = true;
+                    }
+                }
+                if (!$matched) {
+                    $combinedCollection->add(collect($item1)->merge([$attrName => null])); // Add unmatched item from the left collection
+                }
+            }
+
+            return $combinedCollection;
+        });
+
+
     }
 }
