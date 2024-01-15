@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
+use Modules\User\database\factories\AdminFactory;
 
 class Admin extends Authenticatable implements AdminModelInterface
 {
@@ -17,4 +18,9 @@ class Admin extends Authenticatable implements AdminModelInterface
         'email',
         'password',
     ];
+
+    protected static function newFactory(): AdminFactory
+    {
+        return AdminFactory::new();
+    }
 }

@@ -7,6 +7,9 @@
             "email": "n.widart@gmail.com"
         }
     ],
+    "require": {
+        "ext-gd": "*"
+    },
     "extra": {
         "laravel": {
             "providers": [],
@@ -21,7 +24,10 @@
             "Modules\\Shop\\App\\": "app/",
             "Modules\\Shop\\Database\\Factories\\": "database/factories/",
             "Modules\\Shop\\Database\\Seeders\\": "database/seeders/"
-        }
+        },
+        "files": [
+            "app/helpers.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {

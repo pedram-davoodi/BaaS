@@ -160,6 +160,7 @@ return [
          * Package Service Providers...
          */
         \Modules\Email\app\Providers\EmailServiceProvider::class,
+        \Modules\Shop\app\Providers\ShopServiceProvider::class,
 
         /*
          * Application Service Providers...
