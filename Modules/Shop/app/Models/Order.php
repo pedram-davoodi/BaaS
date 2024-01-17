@@ -2,9 +2,9 @@
 
 namespace Modules\Shop\app\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Modules\Shop\database\factories\OrderFactory;
+use Illuminate\Database\Eloquent\Model;
+use Modules\Order\database\factories\OrderFactory;
 
 class Order extends Model
 {

@@ -13,7 +13,3 @@ use Modules\Order\app\Http\Controllers\OrderController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::group([], function () {
-    Route::resource('order', OrderController::class)->names('order');
-});

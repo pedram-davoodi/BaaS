@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Shop\database\factories;
+namespace Modules\Order\database\factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 

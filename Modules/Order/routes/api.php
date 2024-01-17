@@ -14,6 +14,17 @@ use Illuminate\Support\Facades\Route;
     |
 */
 
-Route::middleware(['auth:sanctum'])->prefix('v1')->name('api.')->group(function () {
-    Route::get('order', fn (Request $request) => $request->user())->name('order');
+Route::group(['prefix' => 'order-module', 'as' => 'order.'], function () {
+
+    Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
+        Route::group(['middleware' => ['auth:api-admin']], function () {
+        });
+    });
+
+    Route::group(['prefix' => 'user', 'as' => 'user.'], function () {
+
+        Route::group(['middleware' => ['auth:api']], function () {
+        });
+
+    });
 });

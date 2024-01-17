@@ -13,7 +13,3 @@ use Modules\Billing\app\Http\Controllers\BillingController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::group([], function () {
-    Route::resource('billing', BillingController::class)->names('billing');
-});
