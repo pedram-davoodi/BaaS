@@ -19,9 +19,10 @@ class BlockedAccountController extends Controller
     /**
      * Display a listing of blocked accounts.
      */
-    public function index(BlockedAccountRepository $blockedAccountRepository): BlockedAccountCollection
+    public function index(): BlockedAccountCollection
     {
-        return new BlockedAccountCollection($blockedAccountRepository->paginate(10));
+        return new BlockedAccountCollection((new BlockedAccountRepository(new BlockedAccount()))
+            ->paginate(10));
     }
 
     /**

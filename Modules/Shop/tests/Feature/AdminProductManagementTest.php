@@ -26,7 +26,7 @@ class AdminProductManagementTest extends TestCase
             ->withHeaders($this->headers + ['Authorization' => 'Bearer '.$this->adminToken])
             ->post(route('shop.admin.product.store' , [
                 "name" => fake()->name,
-                'category_id' => $category->id,
+                'product_product_category_id' => $category->id,
                 "price" => rand(1000, 100000),
                 "image" => base64_encode(Str::random(50)),
                 "description" => fake()->text(),
@@ -34,7 +34,7 @@ class AdminProductManagementTest extends TestCase
 
         $response->assertStatus(201)->assertSee('data');
         $this->assertCount(1 , Product::all());
-        $this->assertSame($category->id , Product::firts()->category_id);
+        $this->assertSame($category->id , Product::firts()->product_category_id);
     }
 
     public function testProductCantBeCreatedByGuest(): void
@@ -44,7 +44,7 @@ class AdminProductManagementTest extends TestCase
             ->withHeaders($this->headers)
             ->post(route('shop.admin.product.store' , [
                 "name" => fake()->name,
-                'category_id' => $category->id,
+                'product_category_id' => $category->id,
                 "price" => rand(1000, 100000),
                 "image" => base64_encode(Str::random(50)),
                 "description" => fake()->text(),
@@ -59,7 +59,7 @@ class AdminProductManagementTest extends TestCase
         $response = $this
             ->withHeaders($this->headers)
             ->post(route('shop.admin.product.store' , [
-                'category_id' => $category->id,
+                'product_category_id' => $category->id,
                 "price" => rand(1000, 100000),
                 "image" => base64_encode(Str::random(50)),
                 "description" => fake()->text(),
@@ -80,7 +80,7 @@ class AdminProductManagementTest extends TestCase
                 "description" => fake()->text(),
             ]));
 
-        $response->assertJsonValidationErrors('category_id');
+        $response->assertJsonValidationErrors('product_category_id');
     }
 
     public function testProductCantBeCreatedByValidationPriceError(): void
@@ -90,7 +90,7 @@ class AdminProductManagementTest extends TestCase
             ->withHeaders($this->headers)
             ->post(route('shop.admin.product.store' , [
                 "name" => fake()->name,
-                'category_id' => $category->id,
+                'product_category_id' => $category->id,
                 "price" => "sadasd",
                 "image" => base64_encode(Str::random(50)),
                 "description" => fake()->text(),
@@ -106,7 +106,7 @@ class AdminProductManagementTest extends TestCase
             ->withHeaders($this->headers)
             ->post(route('shop.admin.product.store' , [
                 "name" => fake()->name,
-                'category_id' => $category->id,
+                'product_category_id' => $category->id,
                 "price" => rand(1000, 100000),
                 "description" => fake()->text(),
             ]));

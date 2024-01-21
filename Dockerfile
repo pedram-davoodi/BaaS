@@ -1,5 +1,5 @@
 # Use the official PHP image as the base image
-FROM php:8.1-apache
+FROM php:8.3-apache
 
 # Install dependencies
 RUN apt-get update && apt-get install -y \
@@ -22,17 +22,19 @@ WORKDIR /var/www/html
 # Copy the composer files for optimized caching
 COPY composer.json composer.lock /var/www/html/
 
+ENV COMPOSER_ALLOW_SUPERUSER=1
+
 # Install the dependencies
-RUN composer install --no-scripts --no-autoloader
+RUN composer install --no-scripts --no-autoloader --ignore-platform-reqs
 
 # Copy the rest of the application code
 COPY . /var/www/html/
 
-# Generate the autoloader
-RUN composer dump-autoload --optimize
-
 # Generate Laravel application key
 RUN php artisan key:generate
+
+# Generate the autoloader
+RUN composer dump-autoload
 
 # Set permissions for Laravel
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache

@@ -3,6 +3,7 @@
 namespace Modules\User\app\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Repositories\UserRepositoryInterface;
 use Modules\User\app\Http\Requests\RegisterRequest;
 use Modules\User\app\Http\Requests\UpdateUserRequest;
 use Modules\User\app\Models\User;
@@ -16,7 +17,7 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(UserRepository $repository): UserCollection
+    public function index(UserRepositoryInterface $repository): UserCollection
     {
         return new UserCollection($repository->paginate(5));
     }

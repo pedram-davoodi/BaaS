@@ -10,6 +10,7 @@ use App\Events\UserPasswordWasRest;
 use App\Events\UserProfileUpdated;
 use App\Events\UserRegistered;
 use App\Events\UserUpdated;
+use App\Repositories\UserRepositoryInterface;
 use DateTime;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
@@ -21,6 +22,8 @@ use Modules\User\app\Models\BlockedAccount;
 use Modules\User\app\Models\PasswordResetToken;
 use Modules\User\app\Models\User;
 use Modules\User\app\Models\UserProfile;
+use Modules\User\app\Repository\BlockedAccountRepository;
+use Modules\User\app\Repository\UserProfileRepository;
 use Throwable;
 
 /**
@@ -31,12 +34,13 @@ class UserService
     /**
      * Create a new user.
      */
-    public function createUser(string $email, string $password): User
+    public function createUser(string $email, string $password): Model
     {
-        $user = User::create([
+        $user = app(UserRepositoryInterface::class)->create([
             'email' => $email,
             'password' => bcrypt($password),
         ]);
+
         UserRegistered::dispatch($user);
 
         return $user;
@@ -47,9 +51,8 @@ class UserService
      */
     public function updateUser(User $user, string $password): User
     {
-        $user->update([
-            'password' => bcrypt($password),
-        ]);
+
+        app(UserRepositoryInterface::class)->update(['password' => bcrypt($password)] , ['id' => $user->id]);
         UserUpdated::dispatch($user);
 
         return $user;
@@ -83,7 +86,7 @@ class UserService
      */
     public function forgetPassword(string $email): void
     {
-        $user = User::firstWhere('email', $email);
+        $user = app(UserRepositoryInterface::class)->getByEmails([$email])->first();
 
         if (empty($user)) {
             return;
@@ -102,7 +105,7 @@ class UserService
      */
     public function resetPassword(User $user, string $newPassword): void
     {
-        $user->update(['password' => bcrypt($newPassword)]);
+        app(UserRepositoryInterface::class)->update(['password' => bcrypt($newPassword)] , ['id' => $user->id]);
         PasswordResetToken::find($user->email)->delete();
         UserPasswordWasRest::dispatch($user);
     }
@@ -114,11 +117,10 @@ class UserService
      */
     public function block(User $user, string $description, DateTime $expired_at): Model
     {
-        $blockedAccount = $user->blockedAccount()->updateOrCreate(['user_id' => $user->id],
-            [
-                'description' => $description,
-                'expired_at' => $expired_at,
-            ]);
+        $blockedAccount = app(BlockedAccountRepository::class)->updateOrCreate(
+            ['user_id' => $user->id],
+            ['description' => $description, 'expired_at' => $expired_at]
+        );
 
         UserAccountBlocked::dispatch($user, $blockedAccount);
 
@@ -130,7 +132,7 @@ class UserService
      */
     public function unblock(User $user): User
     {
-        $user->blockedAccount()->delete();
+        app(BlockedAccountRepository::class)->delete(['user_id' => $user->id]);
         UserAccountUnblocked::dispatch($user);
 
         return $user;
@@ -141,7 +143,7 @@ class UserService
      */
     public function updateProfile(User $user, string $firstName, string $lastName, string $mobile, string $address): UserProfile
     {
-        $userProfile = $user->userProfile()->updateOrCreate(['user_id' => $user->id],
+        $userProfile = app(UserProfileRepository::class)->updateOrCreate(['user_id' => $user->id],
             [
                 'first_name' => $firstName,
                 'last_name' => $lastName,
