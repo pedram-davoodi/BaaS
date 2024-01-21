@@ -3,13 +3,14 @@
 namespace Modules\Order\database\factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Modules\Shop\app\Models\OrderItems;
 
 class OrderItemsFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      */
-    protected $model = \Modules\Shop\app\Models\OrderItems::class;
+    protected $model = OrderItems::class;
 
     /**
      * Define the model's default state.

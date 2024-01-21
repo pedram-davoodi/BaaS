@@ -3,6 +3,7 @@
 namespace Modules\Order\database\factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Modules\Order\app\Models\Order;
 use Modules\Shop\app\Enums\OrderStatus;
 
 class OrderFactory extends Factory
@@ -10,7 +11,7 @@ class OrderFactory extends Factory
     /**
      * The name of the factory's corresponding model.
      */
-    protected $model = \Modules\Shop\app\Models\Order::class;
+    protected $model = Order::class;
 
     /**
      * Define the model's default state.
