@@ -2,6 +2,7 @@
 
 namespace Modules\User\app\Http\Controllers\User;
 
+use App\Repositories\UserRepositoryInterface;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -34,7 +35,7 @@ class UserController extends Controller
     public function login(LoginRequest $request): LoginResource
     {
         throw_if(! $this->userService->checkUserCredential($request->email, $request->password), LoginWrongCredentialException::class);
-        $tokenResult = $this->userService->createAccessToken($request->user());
+        $tokenResult = $this->userService->createAccessToken($request->user()->id);
 
         return new LoginResource($request->user(), $tokenResult);
     }
@@ -45,7 +46,7 @@ class UserController extends Controller
     public function register(RegisterRequest $request): LoginResource
     {
         $user = $this->userService->createUser($request->email, $request->password);
-        $token = $this->userService->createAccessToken($user);
+        $token = $this->userService->createAccessToken($user->id);
 
         return new LoginResource($user, $token);
     }
@@ -83,8 +84,8 @@ class UserController extends Controller
      */
     public function resetPassword(RestPasswordRequest $request): JsonResponse
     {
-        $user = User::firstWhere('email', $request->get('email'));
-        $this->userService->resetPassword($user, $request->get('password'));
+        $user = app(UserRepositoryInterface::class)->getByEmails([$request->get('email')])->first();
+        $this->userService->resetPassword($user->id, $request->get('password'));
 
         return jsonResponse(message: __('user.resetPassword.success'));
     }

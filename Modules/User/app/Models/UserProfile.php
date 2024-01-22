@@ -2,11 +2,12 @@
 
 namespace Modules\User\app\Models;
 
+use App\ModelInterfaces\UserProfileModelInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class UserProfile extends Model
+class UserProfile extends Model implements UserProfileModelInterface
 {
     use HasFactory;
 

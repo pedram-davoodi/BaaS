@@ -2,13 +2,13 @@
 
 namespace Modules\User\app\Resources;
 
+use App\ModelInterfaces\AdminModelInterface;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Laravel\Passport\PersonalAccessTokenResult;
-use Modules\User\App\Models\Admin;
 
 class AdminLoginResource extends JsonResource
 {
-    public function __construct(public Admin $admin, public PersonalAccessTokenResult $token)
+    public function __construct(public AdminModelInterface $admin, public PersonalAccessTokenResult $token)
     {
         parent::__construct($this);
     }

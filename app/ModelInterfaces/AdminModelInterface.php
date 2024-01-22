@@ -2,6 +2,11 @@
 
 namespace App\ModelInterfaces;
 
-interface AdminModelInterface
+use App\ModelInterfaces\Base\ModelInterface;
+
+/**
+ * @property string $name
+ */
+interface AdminModelInterface extends ModelInterface
 {
 }

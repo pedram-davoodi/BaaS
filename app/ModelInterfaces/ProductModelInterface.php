@@ -2,9 +2,11 @@
 
 namespace App\ModelInterfaces;
 
+use App\ModelInterfaces\Base\ModelInterface;
+
 /**
  * @property string id
  */
-interface ProductModelInterface
+interface ProductModelInterface extends ModelInterface
 {
 }

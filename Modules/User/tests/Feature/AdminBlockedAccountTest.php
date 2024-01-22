@@ -15,7 +15,7 @@ class AdminBlockedAccountTest extends TestCase
         $adminService = new AdminService();
         parent::setUp();
         $admin = $adminService->createAdmin('ali', '123456', 'admin@admin.com');
-        $adminToken = $adminService->createAccessToken($admin)->accessToken;
+        $adminToken = $adminService->createAccessToken($admin->email)->accessToken;
         $this->headers += ['Authorization' => 'Bearer '.$adminToken];
 
         $this->US = new UserService();
@@ -46,7 +46,7 @@ class AdminBlockedAccountTest extends TestCase
 
     public function test_blocked_account_destroy_success()
     {
-        $this->US->block($this->user, 'Test', Carbon::tomorrow());
+        $this->US->block($this->user->id, 'Test', Carbon::tomorrow());
         $response = $this->withHeaders($this->headers)->delete(route(self::ROUTE.'destroy', $this->user->id));
 
         $response->assertOk()->assertSee('message');

@@ -6,7 +6,7 @@ use Illuminate\Routing\Controller;
 use Modules\User\app\Exceptions\LoginWrongCredentialException;
 use Modules\User\app\Http\Requests\AdminLoginRequest;
 use Modules\User\app\Http\Requests\AdminRegisterRequest;
-use Modules\User\app\Models\Admin;
+use Modules\User\app\Repository\AdminEloquentRepository;
 use Modules\User\app\Resources\AdminLoginResource;
 use Modules\User\app\Services\AdminService;
 use Throwable;
@@ -32,11 +32,9 @@ class AdminController extends Controller
             LoginWrongCredentialException::class,
             __('admin.login.wrongCredential')
         );
+        $tokenResult = $this->adminService->createAccessToken($request->email);
 
-        $tokenResult = $this->adminService->createAccessToken(
-            $admin = Admin::firstWhere('email', $request->get('email'))
-        );
-
+        $admin = app(AdminEloquentRepository::class)->getFirstWhere(['email' => $request->email]);
         return new AdminLoginResource($admin, $tokenResult);
     }
 
@@ -46,7 +44,7 @@ class AdminController extends Controller
     public function register(AdminRegisterRequest $request): AdminLoginResource
     {
         $admin = $this->adminService->createAdmin($request->name, $request->password, $request->email);
-        $token = $this->adminService->createAccessToken($admin);
+        $token = $this->adminService->createAccessToken($request->email);
 
         return new AdminLoginResource($admin, $token);
     }

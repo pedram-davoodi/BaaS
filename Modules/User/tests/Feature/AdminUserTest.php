@@ -16,7 +16,7 @@ class AdminUserTest extends TestCase
         $adminService = new AdminService();
         parent::setUp();
         $admin = $adminService->createAdmin('ali', '123456', 'admin@admin.com');
-        $this->adminToken = $adminService->createAccessToken($admin)->accessToken;
+        $this->adminToken = $adminService->createAccessToken($admin->email)->accessToken;
     }
 
     public function test_user_create_success()

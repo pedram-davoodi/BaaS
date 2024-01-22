@@ -19,7 +19,7 @@ class UserProfileTest extends TestCase
             'email' => 'test@test.com',
             'password' => '123456',
         ]);
-        $token = (new UserService())->createAccessToken($this->user)->accessToken;
+        $token = (new UserService())->createAccessToken($this->user->id)->accessToken;
         $this->headers['Authorization'] = 'Bearer '.$token;
     }
 

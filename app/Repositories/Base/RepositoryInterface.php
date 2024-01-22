@@ -2,13 +2,13 @@
 
 namespace App\Repositories\Base;
 
-use Illuminate\Database\Eloquent\Model;
+use App\ModelInterfaces\Base\ModelInterface;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 
 interface RepositoryInterface
 {
-    public function getOneById($id): ?Model;
+    public function getOneById($id): ?ModelInterface;
 
     public function getByIds(array $ids): ?Collection;
 
@@ -16,13 +16,13 @@ interface RepositoryInterface
 
     public function paginate(int $paginate): LengthAwarePaginator;
 
-    public function getFirstWhere(...$params): ?Model;
+    public function getFirstWhere(...$params): ?ModelInterface;
 
     public function update(array $data, ...$params): bool;
 
-    public function create(array $data): Model;
+    public function create(array $data): ModelInterface;
 
     public function delete($id, ...$params): bool;
 
-    public function updateOrCreate(array $attributes, array $values = []): Model;
+    public function updateOrCreate(array $attributes, array $values = []): ModelInterface;
 }

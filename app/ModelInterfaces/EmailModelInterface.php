@@ -2,6 +2,8 @@
 
 namespace App\ModelInterfaces;
 
-interface EmailModelInterface
+use App\ModelInterfaces\Base\ModelInterface;
+
+interface EmailModelInterface extends ModelInterface
 {
 }

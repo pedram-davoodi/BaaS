@@ -7,7 +7,7 @@ use App\Repositories\UserRepositoryInterface;
 use Modules\User\app\Http\Requests\RegisterRequest;
 use Modules\User\app\Http\Requests\UpdateUserRequest;
 use Modules\User\app\Models\User;
-use Modules\User\app\Repository\UserRepository;
+use Modules\User\app\Repository\UserEloquentRepository;
 use Modules\User\app\Resources\UserCollection;
 use Modules\User\app\Resources\UserResource;
 use Modules\User\app\Services\UserService;
@@ -41,8 +41,8 @@ class UserController extends Controller
     /**
      * Update the specified user in storage.
      */
-    public function update(User $user, UpdateUserRequest $request, UserService $userService): UserResource
+    public function update($user_id, UpdateUserRequest $request, UserService $userService): UserResource
     {
-        return new UserResource($userService->updateUser($user, $request));
+        return new UserResource($userService->updateUser($user_id, $request));
     }
 }

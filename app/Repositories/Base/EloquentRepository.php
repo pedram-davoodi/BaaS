@@ -2,17 +2,18 @@
 
 namespace App\Repositories\Base;
 
+use App\ModelInterfaces\Base\ModelInterface;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 
-class Repository implements RepositoryInterface
+class EloquentRepository implements RepositoryInterface
 {
     public function __construct(protected Model $model){}
 
-    public function getOneById($id): ?Model
+    public function getOneById($id): ?ModelInterface
     {
-        return $this->model->find($id);
+        return $this->model->where($this->model->getKeyName() , $id)->first();
     }
 
     public function getByIds(array $ids): ?Collection
@@ -30,7 +31,7 @@ class Repository implements RepositoryInterface
         return $this->model->paginate($paginate);
     }
 
-    public function getFirstWhere(...$params): ?Model
+    public function getFirstWhere(...$params): ?ModelInterface
     {
         return $this->model->firstWhere(...$params);
     }
@@ -40,7 +41,7 @@ class Repository implements RepositoryInterface
         return $this->model->where(...$params)->update($data);
     }
 
-    public function create(array $data): Model
+    public function create(array $data): ModelInterface
     {
         return $this->model->create($data);
     }
@@ -50,7 +51,7 @@ class Repository implements RepositoryInterface
         return $this->model->where(...$params)->delete();
     }
 
-    public function updateOrCreate(array $attributes, array $values = []): Model
+    public function updateOrCreate(array $attributes, array $values = []): ModelInterface
     {
         return $this->model->updateOrCreate($attributes, $values);
     }

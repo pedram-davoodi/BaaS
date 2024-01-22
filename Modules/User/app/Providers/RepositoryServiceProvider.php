@@ -6,12 +6,14 @@ use App\Repositories\UserRepositoryInterface;
 use Illuminate\Support\ServiceProvider;
 use Modules\User\app\Models\Admin;
 use Modules\User\app\Models\BlockedAccount;
+use Modules\User\app\Models\PasswordResetToken;
 use Modules\User\app\Models\User;
 use Modules\User\app\Models\UserProfile;
-use Modules\User\app\Repository\AdminRepository;
-use Modules\User\app\Repository\BlockedAccountRepository;
-use Modules\User\app\Repository\UserProfileRepository;
-use Modules\User\app\Repository\UserRepository;
+use Modules\User\app\Repository\AdminEloquentRepository;
+use Modules\User\app\Repository\BlockedAccountEloquentRepository;
+use Modules\User\app\Repository\PasswordResetTokenEloquentRepository;
+use Modules\User\app\Repository\UserProfileEloquentRepository;
+use Modules\User\app\Repository\UserEloquentRepository;
 
 class RepositoryServiceProvider extends ServiceProvider
 {
@@ -20,10 +22,11 @@ class RepositoryServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->singleton(UserRepositoryInterface::class, fn () => new UserRepository(new User()));
-        $this->app->singleton(BlockedAccountRepository::class, fn () => new BlockedAccountRepository(new BlockedAccount()));
-        $this->app->singleton(UserProfileRepository::class, fn () => new UserProfileRepository(new UserProfile()));
-        $this->app->singleton(AdminRepository::class, fn () => new AdminRepository(new Admin()));
+        $this->app->singleton(UserRepositoryInterface::class, fn () => new UserEloquentRepository(new User()));
+        $this->app->singleton(BlockedAccountEloquentRepository::class, fn () => new BlockedAccountEloquentRepository(new BlockedAccount()));
+        $this->app->singleton(UserProfileEloquentRepository::class, fn () => new UserProfileEloquentRepository(new UserProfile()));
+        $this->app->singleton(AdminEloquentRepository::class, fn () => new AdminEloquentRepository(new Admin()));
+        $this->app->singleton(PasswordResetTokenEloquentRepository::class, fn () => new PasswordResetTokenEloquentRepository(new PasswordResetToken()));
 
     }
 }
