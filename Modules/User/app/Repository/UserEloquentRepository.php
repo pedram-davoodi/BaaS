@@ -2,7 +2,7 @@
 
 namespace Modules\User\app\Repository;
 
-use App\Events\UserLoggedIn;
+use App\ModelInterfaces\Base\ModelInterface;
 use App\Repositories\Base\EloquentRepository;
 use App\Repositories\UserRepositoryInterface;
 use Illuminate\Support\Collection;

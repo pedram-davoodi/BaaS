@@ -2,10 +2,10 @@
 
 namespace Modules\Email\app\Jobs;
 
+use App\ModelInterfaces\EmailModelInterface;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Modules\Email\app\Models\Email;
 
 class SendEmail implements ShouldQueue
 {
@@ -14,7 +14,7 @@ class SendEmail implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    public function __construct(public Email $email)
+    public function __construct(public EmailModelInterface $email)
     {
         //
     }

@@ -12,7 +12,6 @@ use Modules\User\app\Http\Requests\ForgetPasswordRequest;
 use Modules\User\app\Http\Requests\LoginRequest;
 use Modules\User\app\Http\Requests\RegisterRequest;
 use Modules\User\app\Http\Requests\RestPasswordRequest;
-use Modules\User\app\Models\User;
 use Modules\User\app\Resources\LoginResource;
 use Modules\User\app\Rules\ForgetPasswordTokenBelongsToEmailRule;
 use Modules\User\app\Services\UserService;

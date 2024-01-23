@@ -7,7 +7,7 @@ use App\Events\AdminRegistered;
 use App\ModelInterfaces\AdminModelInterface;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Passport\PersonalAccessTokenResult;
-use Modules\User\app\Repository\AdminEloquentRepository;
+use App\Repositories\AdminRepositoryInterface;
 
 /**
  * Class AdminService
@@ -20,7 +20,7 @@ class AdminService
     public function createAdmin(string $name, string $password, string $email): AdminModelInterface
     {
         $password = bcrypt($password);
-        $admin = app(AdminEloquentRepository::class)->create([
+        $admin = app(AdminRepositoryInterface::class)->create([
             'name' => $name,
             'password' => $password,
             'email' => $email,
@@ -35,9 +35,9 @@ class AdminService
      */
     public function createAccessToken(string $email): PersonalAccessTokenResult
     {
-        $admin = app(AdminEloquentRepository::class)->getFirstWhere(['email' => $email]);
+        $admin = app(AdminRepositoryInterface::class)->getFirstWhere(['email' => $email]);
         AdminLoggedIn::dispatch($admin);
-        return app(AdminEloquentRepository::class)->createAccessToken($admin->id);
+        return app(AdminRepositoryInterface::class)->createAccessToken($admin->id);
     }
 
     /**
@@ -45,7 +45,7 @@ class AdminService
      */
     public function checkAdminCredential(string $email, string $password): bool
     {
-        $admin = app(AdminEloquentRepository::class)->getFirstWhere(['email' => $email]);
+        $admin = app(AdminRepositoryInterface::class)->getFirstWhere(['email' => $email]);
 
         return ! empty($admin) && Hash::check($password, $admin->password);
     }

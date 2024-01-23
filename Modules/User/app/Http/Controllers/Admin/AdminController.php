@@ -6,7 +6,7 @@ use Illuminate\Routing\Controller;
 use Modules\User\app\Exceptions\LoginWrongCredentialException;
 use Modules\User\app\Http\Requests\AdminLoginRequest;
 use Modules\User\app\Http\Requests\AdminRegisterRequest;
-use Modules\User\app\Repository\AdminEloquentRepository;
+use App\Repositories\AdminRepositoryInterface;
 use Modules\User\app\Resources\AdminLoginResource;
 use Modules\User\app\Services\AdminService;
 use Throwable;
@@ -34,7 +34,7 @@ class AdminController extends Controller
         );
         $tokenResult = $this->adminService->createAccessToken($request->email);
 
-        $admin = app(AdminEloquentRepository::class)->getFirstWhere(['email' => $request->email]);
+        $admin = app(AdminRepositoryInterface::class)->getFirstWhere(['email' => $request->email]);
         return new AdminLoginResource($admin, $tokenResult);
     }
 

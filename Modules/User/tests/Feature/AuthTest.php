@@ -2,21 +2,23 @@
 
 namespace Modules\User\tests\Feature;
 
+use App\ModelInterfaces\Base\ModelInterface;
 use Illuminate\Support\Facades\Hash;
 use Modules\User\app\Models\PasswordResetToken;
-use Modules\User\app\Models\User;
 
 /**
  * Test User\UserController
  */
 class AuthTest extends TestCase
 {
-    private User $user;
+    private ModelInterface $user;
 
     public function setUp(): void
     {
         parent::setUp();
-        $this->user = User::factory()->create([
+        parent::setUp();
+
+        $this->user = $this->userRepository->create([
             'email' => 'test@test.com',
             'password' => '123456',
         ]);
@@ -145,7 +147,7 @@ class AuthTest extends TestCase
         $response->assertOk();
         $response->assertSee('message');
 
-        $token = PasswordResetToken::first();
+        $token = $this->PasswordResetTokenEloquentRepository->getAll()->first();
 
         $response = $this->withHeaders($this->headers)
             ->put(route('user.user.users.resetPassword'), [
@@ -157,7 +159,7 @@ class AuthTest extends TestCase
 
         $response->assertOk();
         $response->assertSee('message');
-        $this->assertTrue(Hash::check('123456789', User::first()->password));
+        $this->assertTrue(Hash::check('123456789', $this->userRepository->getOneById($this->user->id)->password));
     }
 
     public function test_reset_password_fails()
@@ -181,6 +183,6 @@ class AuthTest extends TestCase
 
         $response->assertJsonValidationErrors('c_password');
         $response->assertSee('message');
-        $this->assertTrue(Hash::check('123456', User::first()->password));
+        $this->assertTrue(Hash::check('123456', $this->userRepository->getOneById($this->user->id)->password));
     }
 }

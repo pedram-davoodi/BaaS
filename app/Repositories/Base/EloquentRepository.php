@@ -13,7 +13,11 @@ class EloquentRepository implements RepositoryInterface
 
     public function getOneById($id): ?ModelInterface
     {
-        return $this->model->where($this->model->getKeyName() , $id)->first();
+        $model = $this->model->where($this->model->getKeyName() , $id)->first();
+        if (empty($model)) {
+            abort(404);
+        }
+        return $model;
     }
 
     public function getByIds(array $ids): ?Collection
@@ -23,7 +27,7 @@ class EloquentRepository implements RepositoryInterface
 
     public function getAll(): ?Collection
     {
-        return $this->model->all()?->map(fn ($item) => collect($item->toArray()));
+        return $this->model->all();
     }
 
     public function paginate(int $paginate): LengthAwarePaginator

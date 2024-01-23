@@ -3,6 +3,7 @@
 namespace Modules\Email\app\Listeners;
 
 use App\Events\ForgetPassword;
+use App\Repositories\EmailRepositoryInterface;
 use Modules\Email\app\Jobs\SendEmail;
 use Modules\Email\app\Models\Email;
 
@@ -21,7 +22,7 @@ class NotifyUsersOfForgetPasswordToken
      */
     public function handle(ForgetPassword $event): void
     {
-        $email = Email::create([
+        $email = app(EmailRepositoryInterface::class)->create([
             'subject' => 'Forget Password',
             'to' => $event->user->email,
             'status' => 'Pending',

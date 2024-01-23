@@ -6,8 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Repositories\UserRepositoryInterface;
 use Modules\User\app\Http\Requests\RegisterRequest;
 use Modules\User\app\Http\Requests\UpdateUserRequest;
-use Modules\User\app\Models\User;
-use Modules\User\app\Repository\UserEloquentRepository;
 use Modules\User\app\Resources\UserCollection;
 use Modules\User\app\Resources\UserResource;
 use Modules\User\app\Services\UserService;
@@ -25,9 +23,9 @@ class UserController extends Controller
     /**
      * Display a specific user.
      */
-    public function show(User $user): UserResource
+    public function show(int $user_id): UserResource
     {
-        return new UserResource($user);
+        return new UserResource(app(UserRepositoryInterface::class)->getOneById($user_id));
     }
 
     /**

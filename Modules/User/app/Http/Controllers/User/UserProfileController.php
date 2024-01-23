@@ -6,9 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Repositories\UserRepositoryInterface;
 use Illuminate\Support\Facades\Auth;
 use Modules\User\app\Http\Requests\UpdateUserProfileRequest;
-use Modules\User\app\Models\User;
-use Modules\User\app\Models\UserProfile;
-use Modules\User\app\Repository\UserProfileEloquentRepository;
+use App\Repositories\UserProfileRepositoryInterface;
 use Modules\User\app\Resources\ProfileResource;
 use Modules\User\app\Services\UserService;
 
@@ -19,7 +17,7 @@ class UserProfileController extends Controller
      */
     public function show(): ProfileResource
     {
-        return new ProfileResource((new UserProfileEloquentRepository(new UserProfile()))
+        return new ProfileResource(app(UserProfileRepositoryInterface::class)
             ->getFirstWhere('user_id', Auth::guard('api')->id()));
     }
 

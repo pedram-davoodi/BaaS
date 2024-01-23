@@ -2,12 +2,14 @@
 
 namespace Modules\User\app\Repository;
 
+use App\Repositories\AdminRepositoryInterface;
 use App\Repositories\Base\EloquentRepository;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Passport\PersonalAccessTokenResult;
 use Modules\User\app\Models\Admin;
 
-class AdminEloquentRepository extends EloquentRepository{
+class AdminEloquentRepository extends EloquentRepository implements AdminRepositoryInterface
+{
     /**
      * Create access token for the user.
      */

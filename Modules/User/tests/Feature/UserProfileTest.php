@@ -2,20 +2,21 @@
 
 namespace Modules\User\tests\Feature;
 
+use App\ModelInterfaces\Base\ModelInterface;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Modules\User\app\Models\User;
 use Modules\User\app\Services\UserService;
 
 class UserProfileTest extends TestCase
 {
     use RefreshDatabase;
 
-    private User $user;
+    private ModelInterface $user;
 
     public function setUp(): void
     {
         parent::setUp();
-        $this->user = User::factory()->create([
+
+        $this->user = $this->userRepository->create([
             'email' => 'test@test.com',
             'password' => '123456',
         ]);

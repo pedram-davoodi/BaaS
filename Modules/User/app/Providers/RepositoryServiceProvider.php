@@ -2,6 +2,10 @@
 
 namespace Modules\User\app\Providers;
 
+use App\Repositories\AdminRepositoryInterface;
+use App\Repositories\BlockedAccountRepositoryInterface;
+use App\Repositories\PasswordResetTokenRepositoryInterface;
+use App\Repositories\UserProfileRepositoryInterface;
 use App\Repositories\UserRepositoryInterface;
 use Illuminate\Support\ServiceProvider;
 use Modules\User\app\Models\Admin;
@@ -23,10 +27,9 @@ class RepositoryServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->singleton(UserRepositoryInterface::class, fn () => new UserEloquentRepository(new User()));
-        $this->app->singleton(BlockedAccountEloquentRepository::class, fn () => new BlockedAccountEloquentRepository(new BlockedAccount()));
-        $this->app->singleton(UserProfileEloquentRepository::class, fn () => new UserProfileEloquentRepository(new UserProfile()));
-        $this->app->singleton(AdminEloquentRepository::class, fn () => new AdminEloquentRepository(new Admin()));
-        $this->app->singleton(PasswordResetTokenEloquentRepository::class, fn () => new PasswordResetTokenEloquentRepository(new PasswordResetToken()));
-
+        $this->app->singleton(BlockedAccountRepositoryInterface::class, fn () => new BlockedAccountEloquentRepository(new BlockedAccount()));
+        $this->app->singleton(UserProfileRepositoryInterface::class, fn () => new UserProfileEloquentRepository(new UserProfile()));
+        $this->app->singleton(AdminRepositoryInterface::class, fn () => new AdminEloquentRepository(new Admin()));
+        $this->app->singleton(PasswordResetTokenRepositoryInterface::class, fn () => new PasswordResetTokenEloquentRepository(new PasswordResetToken()));
     }
 }

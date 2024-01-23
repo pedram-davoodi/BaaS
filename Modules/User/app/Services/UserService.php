@@ -13,6 +13,7 @@ use App\Events\UserUpdated;
 use App\ModelInterfaces\BlockedAccountModelInterface;
 use App\ModelInterfaces\UserModelInterface;
 use App\ModelInterfaces\UserProfileModelInterface;
+use App\Repositories\BlockedAccountRepositoryInterface;
 use App\Repositories\UserRepositoryInterface;
 use DateTime;
 use Illuminate\Database\Eloquent\Model;
@@ -21,10 +22,9 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Laravel\Passport\PersonalAccessTokenResult;
 use Modules\User\app\Exceptions\LoginWrongCredentialException;
-use Modules\User\app\Repository\BlockedAccountEloquentRepository;
-use Modules\User\app\Repository\PasswordResetTokenEloquentRepository;
-use Modules\User\app\Repository\UserProfileEloquentRepository;
+use App\Repositories\PasswordResetTokenRepositoryInterface;
 use Throwable;
+use App\Repositories\UserProfileRepositoryInterface;
 
 /**
  * Class UserService
@@ -91,7 +91,7 @@ class UserService
             return;
         }
 
-        app(PasswordResetTokenEloquentRepository::class)->updateOrCreate(['email' => $email], ['token' => $token = Hash::make(Str::random(32))]);
+        app(PasswordResetTokenRepositoryInterface::class)->updateOrCreate(['email' => $email], ['token' => $token = Hash::make(Str::random(32))]);
 
         ForgetPassword::dispatch($user, $token);
     }
@@ -106,7 +106,7 @@ class UserService
     {
         $user = app(UserRepositoryInterface::class)->getOneById($user_id);
         app(UserRepositoryInterface::class)->update(['password' => bcrypt($newPassword)] , ['id' => $user_id]);
-        app(PasswordResetTokenEloquentRepository::class)->getOneById($user->email)->delete();
+        app(PasswordResetTokenRepositoryInterface::class)->getOneById($user->email)->delete();
         UserPasswordWasRest::dispatch($user);
     }
 
@@ -117,7 +117,7 @@ class UserService
      */
     public function block($user_id, string $description, DateTime $expired_at): Model
     {
-        $blockedAccount = app(BlockedAccountEloquentRepository::class)->updateOrCreate(
+        $blockedAccount = app(BlockedAccountRepositoryInterface::class)->updateOrCreate(
             ['user_id' => $user_id],
             ['description' => $description, 'expired_at' => $expired_at]
         );
@@ -134,7 +134,7 @@ class UserService
     public function unblock($user_id): UserModelInterface
     {
         $user = app(UserRepositoryInterface::class)->getOneById($user_id);
-        app(BlockedAccountEloquentRepository::class)->delete(['user_id' => $user_id]);
+        app(BlockedAccountRepositoryInterface::class)->delete(['user_id' => $user_id]);
         UserAccountUnblocked::dispatch($user);
         return $user;
     }
@@ -144,7 +144,7 @@ class UserService
      */
     public function updateProfile(int $user_id, string $firstName, string $lastName, string $mobile, string $address): UserProfileModelInterface
     {
-        $userProfile = app(UserProfileEloquentRepository::class)->updateOrCreate(['user_id' => $user_id],
+        $userProfile = app(UserProfileRepositoryInterface::class)->updateOrCreate(['user_id' => $user_id],
             [
                 'first_name' => $firstName,
                 'last_name' => $lastName,
