@@ -1,8 +1,7 @@
 <?php
 
-namespace Modules\User\app\Repository;
+namespace Modules\User\app\Repository\Eloquent;
 
-use App\ModelInterfaces\Base\ModelInterface;
 use App\Repositories\Base\EloquentRepository;
 use App\Repositories\UserRepositoryInterface;
 use Illuminate\Support\Collection;
@@ -10,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Laravel\Passport\PersonalAccessTokenResult;
 use Modules\User\app\Models\User;
 
-class UserEloquentRepository extends EloquentRepository implements UserRepositoryInterface
+class UserRepository extends EloquentRepository implements UserRepositoryInterface
 {
     public function getByEmails(array $emails): Collection
     {

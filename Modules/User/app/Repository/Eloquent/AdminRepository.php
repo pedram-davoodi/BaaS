@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\User\app\Repository;
+namespace Modules\User\app\Repository\Eloquent;
 
 use App\Repositories\AdminRepositoryInterface;
 use App\Repositories\Base\EloquentRepository;
@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Hash;
 use Laravel\Passport\PersonalAccessTokenResult;
 use Modules\User\app\Models\Admin;
 
-class AdminEloquentRepository extends EloquentRepository implements AdminRepositoryInterface
+class AdminRepository extends EloquentRepository implements AdminRepositoryInterface
 {
     /**
      * Create access token for the user.
@@ -23,7 +23,7 @@ class AdminEloquentRepository extends EloquentRepository implements AdminReposit
      */
     public function checkUserCredential(string $email, string $password): bool
     {
-        $admin = app(AdminEloquentRepository::class)->getFirstWhere(['email' => $email]);
+        $admin = app(AdminRepository::class)->getFirstWhere(['email' => $email]);
 
         return ! empty($admin) && Hash::check($password, $admin->password);
     }

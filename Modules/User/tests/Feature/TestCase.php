@@ -6,8 +6,8 @@ use App\Repositories\UserRepositoryInterface;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Modules\User\app\Models\PasswordResetToken;
 use Modules\User\app\Models\User;
-use Modules\User\app\Repository\PasswordResetTokenEloquentRepository;
-use Modules\User\app\Repository\UserEloquentRepository;
+use Modules\User\app\Repository\Eloquent\PasswordResetTokenRepository;
+use Modules\User\app\Repository\Eloquent\UserRepository;
 
 class TestCase extends \Tests\TestCase
 {
@@ -16,12 +16,12 @@ class TestCase extends \Tests\TestCase
     protected array $headers = ['accept' => 'application/json'];
 
     protected UserRepositoryInterface  $userRepository;
-    protected PasswordResetTokenEloquentRepository  $PasswordResetTokenEloquentRepository;
+    protected PasswordResetTokenRepository  $PasswordResetTokenEloquentRepository;
 
     public function setUp(): void
     {
-        $this->userRepository = new UserEloquentRepository(new User());
-        $this->PasswordResetTokenEloquentRepository = (new PasswordResetTokenEloquentRepository(new PasswordResetToken()));
+        $this->userRepository = new UserRepository(new User());
+        $this->PasswordResetTokenEloquentRepository = (new PasswordResetTokenRepository(new PasswordResetToken()));
 
         parent::setUp();
         $this->seed();
