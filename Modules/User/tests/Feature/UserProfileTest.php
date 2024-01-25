@@ -16,7 +16,7 @@ class UserProfileTest extends TestCase
     {
         parent::setUp();
 
-        $this->user = $this->userRepository->create([
+        $this->user = $this->userRepository->faker()->create([
             'email' => 'test@test.com',
             'password' => '123456',
         ]);
@@ -51,11 +51,12 @@ class UserProfileTest extends TestCase
 
     public function test_user_profiles_show()
     {
-        $this->user->userProfile()->create([
+        $this->userProfileRepositoryInterface->faker()->create([
             'first_name' => 'Ali',
             'last_name' => 'Davoodi',
             'mobile' => '09307718864',
             'address' => 'Mashhad',
+            'user_id' => $this->user->id
         ]);
 
         $response = $this->withHeaders($this->headers)

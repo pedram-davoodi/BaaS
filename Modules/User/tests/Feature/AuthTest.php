@@ -18,7 +18,7 @@ class AuthTest extends TestCase
         parent::setUp();
         parent::setUp();
 
-        $this->user = $this->userRepository->create([
+        $this->user = $this->userRepository->faker()->create([
             'email' => 'test@test.com',
             'password' => '123456',
         ]);
@@ -147,7 +147,7 @@ class AuthTest extends TestCase
         $response->assertOk();
         $response->assertSee('message');
 
-        $token = $this->PasswordResetTokenEloquentRepository->getAll()->first();
+        $token = $this->passwordResetTokenRepository->getAll()->first();
 
         $response = $this->withHeaders($this->headers)
             ->put(route('user.user.users.resetPassword'), [

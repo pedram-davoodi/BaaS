@@ -6,6 +6,7 @@ use App\ModelInterfaces\UserProfileModelInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Modules\User\database\factories\UserProfileFactory;
 
 class UserProfile extends Model implements UserProfileModelInterface
 {
@@ -24,5 +25,10 @@ class UserProfile extends Model implements UserProfileModelInterface
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    protected static function newFactory(): UserProfileFactory
+    {
+        return UserProfileFactory::new();
     }
 }

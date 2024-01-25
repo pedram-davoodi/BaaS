@@ -6,6 +6,7 @@ use App\ModelInterfaces\Base\ModelInterface;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
+use Modules\User\app\Models\User;
 
 class EloquentRepository implements RepositoryInterface
 {
@@ -58,5 +59,10 @@ class EloquentRepository implements RepositoryInterface
     public function updateOrCreate(array $attributes, array $values = []): ModelInterface
     {
         return $this->model->updateOrCreate($attributes, $values);
+    }
+
+    public function faker()
+    {
+        return $this->model::factory();
     }
 }
