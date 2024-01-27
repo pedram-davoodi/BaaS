@@ -16,7 +16,7 @@ class AdminProductManagementTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->adminToken = (new AdminService())->createAccessToken(Admin::factory()->create())->accessToken;
+        $this->adminToken = (new AdminService())->createAccessToken(Admin::factory()->create()->email)->accessToken;
     }
 
     public function testProductCanBeCreatedByAdmin(): void
