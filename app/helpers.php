@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Storage;
 
 if (!function_exists('jsonResponse')) {
     /**
@@ -24,5 +25,37 @@ if (!function_exists('jsonResponse')) {
 
         return response()->json($response, $code);
     }
+}
 
+if (!function_exists('saveBase64Files')) {
+    /**
+     * Save a base64-encoded file string to a file.
+     *
+     * @param string $base64String The base64-encoded image string.
+     * @param string $destinationPath The destination path where the image will be saved.
+     *
+     * @return string An associative array containing the 'path', 'url', and 'mime' of the saved image.
+     */
+    function saveBase64Files(string $base64String, string $destinationPath = 'images/' , string $disk = 'public'): string
+    {
+
+        list(, $base64Data) = explode(';', $base64String);
+        list(, $base64Data) = explode(',', $base64Data);
+
+
+        list(, $extension) = explode('/', explode(':', substr($base64String, 0, strpos($base64String, ';')))[1]);
+        // Decode the base64 string
+
+
+        $imageData = base64_decode($base64Data);
+
+        // Generate a unique filename for the image
+        $filename = uniqid() . '.' . $extension;
+
+        // Save the image to the storage disk
+        Storage::disk($disk)->put($destinationPath . $filename, $imageData);
+
+        // Return an associative array with path, url, and mime
+        return $destinationPath . $filename;
+    }
 }

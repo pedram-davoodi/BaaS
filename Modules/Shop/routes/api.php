@@ -22,7 +22,7 @@ Route::group(['prefix' => 'shop-module', 'as' => 'shop.'], function () {
 
     Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
         Route::group(['middleware' => ['auth:api-admin']], function () {
-            Route::resource('product' , ProductController::class);
+            Route::resource('products' , ProductController::class);
         });
     });
 

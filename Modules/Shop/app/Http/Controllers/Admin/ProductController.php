@@ -3,6 +3,7 @@
 namespace Modules\Shop\app\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 use Modules\Shop\app\Http\Requests\StoreProductRequest;
 use Modules\Shop\app\Resources\ProductResource;
 use Modules\Shop\app\Services\ProductService;
@@ -14,14 +15,11 @@ class ProductController extends Controller
      */
     public function store(StoreProductRequest $request, ProductService $productService): ProductResource
     {
-        //TODO: upload image
-        $image_url = "";
-
         return new ProductResource($productService->store(
             $request->name,
             $request->product_category_id,
             $request->price,
-            $image_url,
+            saveBase64Files($request->image),
             $request->description
         ));
     }

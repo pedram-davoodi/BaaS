@@ -15,7 +15,7 @@ class AdminRepository extends EloquentRepository implements AdminRepositoryInter
      */
     public function createAccessToken($admin_id): PersonalAccessTokenResult
     {
-        return Admin::find($admin_id)->createToken('User Access Token');
+        return app(AdminRepositoryInterface::class)->getOneById($admin_id)->createToken('User Access Token');
     }
 
     /**

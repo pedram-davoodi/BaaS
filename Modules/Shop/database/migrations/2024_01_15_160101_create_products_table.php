@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->unsignedDecimal('price');
-            $table->string('image_url')->nullable();
+            $table->string('image_path')->nullable();
             $table->unsignedBigInteger('product_category_id')->nullable();
             $table->text('description');
             $table->timestamps();
