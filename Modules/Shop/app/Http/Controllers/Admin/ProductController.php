@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Repositories\ProductRepositoryInterface;
 use Illuminate\Http\JsonResponse;
 use Modules\Shop\app\Http\Requests\StoreProductRequest;
+use Modules\Shop\app\Http\Requests\UpdateProductRequest;
 use Modules\Shop\app\Resources\ProductCollection;
 use Modules\Shop\app\Resources\ProductResource;
 use Modules\Shop\app\Services\ProductService;
@@ -34,6 +35,23 @@ class ProductController extends Controller
             $request->description
         ));
     }
+
+
+    /**
+     * create new product
+     */
+    public function update($product_id ,UpdateProductRequest $request, ProductService $productService): ProductResource
+    {
+        return new ProductResource($productService->update(
+            $product_id,
+            $request->name,
+            $request->product_category_id,
+            $request->price,
+            !empty($request->image) ? saveBase64Files($request->image) : $request->image_path,
+            $request->description
+        ));
+    }
+
 
     /**
      * Delete an existing product
