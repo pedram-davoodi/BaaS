@@ -2,6 +2,8 @@
 
 namespace Modules\Shop\tests\Feature;
 
+use App\Events\ProductDeleted;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Str;
 
 class AdminProductManagementTest extends TestCase
@@ -150,6 +152,30 @@ class AdminProductManagementTest extends TestCase
 
         $response->assertStatus(401);
         $response->assertSee('message');
+    }
+
+    public function testProductCanBeDeleted()
+    {
+        Event::fake();
+        $this->productRepository->faker()->create();
+        $response = $this->withHeaders($this->headers + ['Authorization' => 'Bearer '.$this->adminToken])
+            ->delete(route('shop.admin.products.destroy' , 1));
+        $product = $this->productRepository->getOneByIdWithTrashed(1);
+        $response->assertStatus(200);
+        $response->assertSee('message');
+        $this->assertNotNull($product->deleted_at);
+        Event::assertDispatched(ProductDeleted::class);
+    }
+
+    public function testProductCantBeDeletedByGuess()
+    {
+        Event::fake();
+        $this->productRepository->faker()->create();
+        $response = $this->withHeaders($this->headers)
+            ->delete(route('shop.admin.products.destroy' , 1));
+        $response->assertStatus(401);
+        $response->assertSee('message');
+        Event::assertNotDispatched(ProductDeleted::class);
     }
 }
 

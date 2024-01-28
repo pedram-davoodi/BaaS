@@ -2,6 +2,7 @@
 
 namespace Modules\Shop\app\Services;
 
+use App\Events\ProductDeleted;
 use \App\Events\ProductStored;
 use App\Repositories\ProductRepositoryInterface;
 use Modules\Shop\app\Models\Product;
@@ -25,5 +26,17 @@ class ProductService
         ProductStored::dispatch($product);
 
         return $product;
+    }
+
+    /**
+     * Delete a product
+     */
+    public function delete(int $id): bool
+    {
+        app(ProductRepositoryInterface::class)->delete([
+            'id' => $id
+        ]);
+        ProductDeleted::dispatch(app(ProductRepositoryInterface::class)->getOneByIdWithTrashed($id));
+        return true;
     }
 }
