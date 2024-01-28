@@ -10,6 +10,8 @@ interface RepositoryInterface
 {
     public function getOneById($id): ?ModelInterface;
 
+    public function getOneByIdWithTrashed($id): ?ModelInterface;
+
     public function getByIds(array $ids): ?Collection;
 
     public function getAll(): ?Collection;

@@ -21,6 +21,15 @@ class EloquentRepository implements RepositoryInterface
         return $model;
     }
 
+    public function getOneByIdWithTrashed($id): ?ModelInterface
+    {
+        $model = $this->model->where($this->model->getKeyName() , $id)->withTrashed()->first();
+        if (empty($model)) {
+            abort(404);
+        }
+        return $model;
+    }
+
     public function getByIds(array $ids): ?Collection
     {
         return $this->model->find($ids)?->map(fn ($item) => collect($item->toArray()));
