@@ -112,5 +112,44 @@ class AdminProductManagementTest extends TestCase
 
         $response->assertJsonValidationErrors('image');
     }
+
+    public function testProductIndexCanBeShown()
+    {
+        $this->productRepository->faker()->count(10)->create();
+
+        $response = $this->withHeaders($this->headers + ['Authorization' => 'Bearer '.$this->adminToken])
+            ->get(route('shop.admin.products.index'));
+
+        $response->assertStatus(200);
+        $response->assertSee('data');
+        $this->assertCount(10 , $response->json()['data']);
+    }
+
+    public function testProductIndexShouldBePaginated()
+    {
+        $this->productRepository->faker()->count(45)->create();
+
+        $response = $this->withHeaders($this->headers + ['Authorization' => 'Bearer '.$this->adminToken])
+            ->get(route('shop.admin.products.index'));
+
+        $response->assertStatus(200);
+        $response->assertSee('data');
+        $response->assertSee('per_page');
+        $response->assertSee('total');
+        $this->assertCount(10 , $response->json()['data']);
+        $this->assertEquals(45 , $response->json()['meta']['total']);
+        $this->assertEquals(10 , $response->json()['meta']['per_page']);
+    }
+
+    public function testProductIndexCanBeShownToAdminOnly()
+    {
+        $this->productRepository->faker()->count(10)->create();
+
+        $response = $this->withHeaders($this->headers)
+            ->get(route('shop.admin.products.index'));
+
+        $response->assertStatus(401);
+        $response->assertSee('message');
+    }
 }
 
