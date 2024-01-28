@@ -5,8 +5,6 @@ namespace Modules\Shop\app\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Repositories\ProductRepositoryInterface;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Storage;
-use Modules\Shop\app\Http\Requests\DeleteProductRequest;
 use Modules\Shop\app\Http\Requests\StoreProductRequest;
 use Modules\Shop\app\Resources\ProductCollection;
 use Modules\Shop\app\Resources\ProductResource;
