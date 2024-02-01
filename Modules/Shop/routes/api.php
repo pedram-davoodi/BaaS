@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Modules\Shop\app\Http\Controllers\Admin\ProductCategoryController;
 use Modules\Shop\app\Http\Controllers\Admin\ProductController;
 use Modules\User\app\Http\Controllers\Admin\AdminController;
 use Modules\User\app\Http\Controllers\Admin\BlockedAccountController;
@@ -23,6 +24,7 @@ Route::group(['prefix' => 'shop-module', 'as' => 'shop.'], function () {
     Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
         Route::group(['middleware' => ['auth:api-admin']], function () {
             Route::resource('products' , ProductController::class);
+            Route::resource('product-categories' , ProductCategoryController::class);
         });
     });
 

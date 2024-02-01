@@ -2,18 +2,20 @@
 
 namespace Modules\Shop\app\Models;
 
+use App\ModelInterfaces\ProductCategoryModelInterface;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Modules\Shop\database\factories\ProductCategoryFactory;
 
-class ProductCategory extends Model
+class ProductCategory extends Model implements ProductCategoryModelInterface
 {
-    use HasFactory;
+    use HasFactory,SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
      */
-    protected $fillable = [];
+    protected $guarded = [];
 
     protected static function newFactory(): ProductCategoryFactory
     {

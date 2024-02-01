@@ -7,7 +7,6 @@ use \App\Events\ProductStored;
 use App\Events\ProductUpdated;
 use App\ModelInterfaces\ProductModelInterface;
 use App\Repositories\ProductRepositoryInterface;
-use Modules\Shop\app\Models\Product;
 
 class ProductService
 {
@@ -15,7 +14,7 @@ class ProductService
     /**
      * Create a new product
      */
-    public function store($name, $product_category_id, $price, $image, $description): Product
+    public function store($name, $product_category_id, $price, $image, $description): ProductModelInterface
     {
         $product = app(ProductRepositoryInterface::class)->create([
             "name" => $name,
