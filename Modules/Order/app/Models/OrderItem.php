@@ -2,10 +2,10 @@
 
 namespace Modules\Order\app\Models;
 
-use App\ModelInterfaces\OrderModelInterface;
+use App\ModelInterfaces\OrderItemModelInterface;
 use Illuminate\Database\Eloquent\Model;
 
-class Order extends Model implements OrderModelInterface
+class OrderItem extends Model implements OrderItemModelInterface
 {
     protected $guarded = [];
 }

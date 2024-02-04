@@ -159,7 +159,7 @@ class AuthTest extends TestCase
 
         $response->assertOk();
         $response->assertSee('message');
-        $this->assertTrue(Hash::check('123456789', $this->userRepository->getOneById($this->user->id)->password));
+        $this->assertTrue(Hash::check('123456789', $this->userRepository->getOneByIdOrFail($this->user->id)->password));
     }
 
     public function test_reset_password_fails()
@@ -183,6 +183,6 @@ class AuthTest extends TestCase
 
         $response->assertJsonValidationErrors('c_password');
         $response->assertSee('message');
-        $this->assertTrue(Hash::check('123456', $this->userRepository->getOneById($this->user->id)->password));
+        $this->assertTrue(Hash::check('123456', $this->userRepository->getOneByIdOrFail($this->user->id)->password));
     }
 }

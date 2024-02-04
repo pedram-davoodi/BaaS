@@ -161,6 +161,7 @@ return [
          */
         \Modules\Email\app\Providers\EmailServiceProvider::class,
         \Modules\Shop\app\Providers\ShopServiceProvider::class,
+        \Modules\Order\app\Providers\OrderServiceProvider::class,
 
         /*
          * Application Service Providers...

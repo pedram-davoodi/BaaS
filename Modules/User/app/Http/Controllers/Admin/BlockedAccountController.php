@@ -44,7 +44,7 @@ class BlockedAccountController extends Controller
      */
     public function destroy(int $blockedAccount_id , UserService $service): JsonResponse
     {
-        $service->unblock(app(BlockedAccountRepositoryInterface::class)->getOneById($blockedAccount_id)->user_id);
+        $service->unblock(app(BlockedAccountRepositoryInterface::class)->getOneByIdOrFail($blockedAccount_id)->user_id);
 
         return jsonResponse(message: __('admin.user.unblocked'));
     }

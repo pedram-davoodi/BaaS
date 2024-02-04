@@ -51,7 +51,7 @@ class UserService
      */
     public function updateUser(int $user_id, string $password): UserModelInterface
     {
-        $user = app(UserRepositoryInterface::class)->getOneById($user_id);
+        $user = app(UserRepositoryInterface::class)->getOneByIdOrFail($user_id);
         app(UserRepositoryInterface::class)->update(['password' => bcrypt($password)] , ['id' => $user_id]);
         UserUpdated::dispatch($user);
         return $user;
@@ -62,7 +62,7 @@ class UserService
      */
     public function createAccessToken($user_id): PersonalAccessTokenResult
     {
-        $user = app(UserRepositoryInterface::class)->getOneById($user_id);
+        $user = app(UserRepositoryInterface::class)->getOneByIdOrFail($user_id);
         UserLoggedIn::dispatch($user);
         return app(UserRepositoryInterface::class)->createAccessToken($user_id);
     }
@@ -104,9 +104,9 @@ class UserService
      */
     public function resetPassword($user_id, string $newPassword): void
     {
-        $user = app(UserRepositoryInterface::class)->getOneById($user_id);
+        $user = app(UserRepositoryInterface::class)->getOneByIdOrFail($user_id);
         app(UserRepositoryInterface::class)->update(['password' => bcrypt($newPassword)] , ['id' => $user_id]);
-        app(PasswordResetTokenRepositoryInterface::class)->getOneById($user->email)->delete();
+        app(PasswordResetTokenRepositoryInterface::class)->getOneByIdOrFail($user->email)->delete();
         UserPasswordWasRest::dispatch($user);
     }
 
@@ -121,7 +121,7 @@ class UserService
             ['user_id' => $user_id],
             ['description' => $description, 'expired_at' => $expired_at]
         );
-        $user = app(UserRepositoryInterface::class)->getOneById($user_id);
+        $user = app(UserRepositoryInterface::class)->getOneByIdOrFail($user_id);
 
         UserAccountBlocked::dispatch($user, $blockedAccount);
 
@@ -133,7 +133,7 @@ class UserService
      */
     public function unblock($user_id): UserModelInterface
     {
-        $user = app(UserRepositoryInterface::class)->getOneById($user_id);
+        $user = app(UserRepositoryInterface::class)->getOneByIdOrFail($user_id);
         app(BlockedAccountRepositoryInterface::class)->delete(['user_id' => $user_id]);
         UserAccountUnblocked::dispatch($user);
         return $user;

@@ -12,7 +12,7 @@ class EloquentRepository implements RepositoryInterface
 {
     public function __construct(protected Model $model){}
 
-    public function getOneById($id): ?ModelInterface
+    public function getOneByIdOrFail($id): ?ModelInterface
     {
         $model = $this->model->where($this->model->getKeyName() , $id)->first();
         if (empty($model)) {
@@ -21,7 +21,7 @@ class EloquentRepository implements RepositoryInterface
         return $model;
     }
 
-    public function getOneByIdWithTrashed($id): ?ModelInterface
+    public function getOneByIdOrFailWithTrashed($id): ?ModelInterface
     {
         $model = $this->model->where($this->model->getKeyName() , $id)->withTrashed()->first();
         if (empty($model)) {
@@ -73,5 +73,15 @@ class EloquentRepository implements RepositoryInterface
     public function faker()
     {
         return $this->model::factory();
+    }
+
+    public function getOneById($id): ?ModelInterface
+    {
+        return $this->model->where($this->model->getKeyName() , $id)->first();
+    }
+
+    public function insert(array $data): bool
+    {
+        return $this->model->insert($data);
     }
 }

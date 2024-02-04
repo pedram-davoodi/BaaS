@@ -21,4 +21,12 @@ class Product extends Model implements ProductModelInterface
     {
         return ProductFactory::new();
     }
+
+    /**
+     * get price of produce
+     */
+    public function price(): int
+    {
+        return $this->price;
+    }
 }

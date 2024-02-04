@@ -102,7 +102,7 @@ class AdminProductCategoryManagementTest extends TestCase
         $response = $this->withHeaders($this->headers + ['Authorization' => 'Bearer '.$this->adminToken])
             ->delete(route('shop.admin.product-categories.destroy' , 1));
 
-        $product = $this->productCategoryRepository->getOneByIdWithTrashed(1);
+        $product = $this->productCategoryRepository->getOneByIdOrFailWithTrashed(1);
         $response->assertStatus(200);
         $response->assertSee('message');
         $this->assertNotNull($product->deleted_at);

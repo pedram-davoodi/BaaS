@@ -7,7 +7,6 @@ use App\Events\ProductCategoryStored;
 use App\Events\ProductCategoryUpdated;
 use App\ModelInterfaces\ProductCategoryModelInterface;
 use App\Repositories\ProductCategoryRepositoryInterface;
-use Modules\Shop\app\Models\ProductCategory;
 
 class ProductCategoryService
 {
@@ -30,7 +29,7 @@ class ProductCategoryService
     {
         $productCategoryRepository = app(ProductCategoryRepositoryInterface::class);
         app(ProductCategoryRepositoryInterface::class)->update(['name' => $name] , ["id" => $id]);
-        ProductCategoryUpdated::dispatch($productCategory = $productCategoryRepository->getOneById($id));
+        ProductCategoryUpdated::dispatch($productCategory = $productCategoryRepository->getOneByIdOrFail($id));
         return $productCategory;
     }
 
@@ -41,7 +40,7 @@ class ProductCategoryService
     {
         $productCategoryRepository = app(ProductCategoryRepositoryInterface::class);
         $productCategory = $productCategoryRepository->delete(["id" => $id]);
-        ProductCategoryDeleted::dispatch($productCategoryRepository->getOneByIdWithTrashed($id));
+        ProductCategoryDeleted::dispatch($productCategoryRepository->getOneByIdOrFailWithTrashed($id));
         return $productCategory;
     }
 }

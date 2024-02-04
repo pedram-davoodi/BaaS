@@ -8,9 +8,11 @@ use Illuminate\Support\Collection;
 
 interface RepositoryInterface
 {
+    public function getOneByIdOrFail($id): ?ModelInterface;
+
     public function getOneById($id): ?ModelInterface;
 
-    public function getOneByIdWithTrashed($id): ?ModelInterface;
+    public function getOneByIdOrFailWithTrashed($id): ?ModelInterface;
 
     public function getByIds(array $ids): ?Collection;
 
@@ -23,6 +25,8 @@ interface RepositoryInterface
     public function update(array $data, ...$params): bool;
 
     public function create(array $data): ModelInterface;
+
+    public function insert(array $data): bool;
 
     public function delete($id, ...$params): bool;
 

@@ -45,7 +45,7 @@ class ProductService
                 'id' => $product_id
             ]
         );
-        ProductUpdated::dispatch($product = app(ProductRepositoryInterface::class)->getOneById($product_id));
+        ProductUpdated::dispatch($product = app(ProductRepositoryInterface::class)->getOneByIdOrFail($product_id));
 
         return $product;
     }
@@ -58,7 +58,7 @@ class ProductService
         app(ProductRepositoryInterface::class)->delete([
             'id' => $id
         ]);
-        ProductDeleted::dispatch(app(ProductRepositoryInterface::class)->getOneByIdWithTrashed($id));
+        ProductDeleted::dispatch(app(ProductRepositoryInterface::class)->getOneByIdOrFailWithTrashed($id));
         return true;
     }
 }

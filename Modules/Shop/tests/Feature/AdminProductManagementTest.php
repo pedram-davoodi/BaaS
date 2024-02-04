@@ -161,7 +161,7 @@ class AdminProductManagementTest extends TestCase
         $this->productRepository->faker()->create();
         $response = $this->withHeaders($this->headers + ['Authorization' => 'Bearer '.$this->adminToken])
             ->delete(route('shop.admin.products.destroy' , 1));
-        $product = $this->productRepository->getOneByIdWithTrashed(1);
+        $product = $this->productRepository->getOneByIdOrFailWithTrashed(1);
         $response->assertStatus(200);
         $response->assertSee('message');
         $this->assertNotNull($product->deleted_at);

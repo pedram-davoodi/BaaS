@@ -25,7 +25,7 @@ class UserController extends Controller
      */
     public function show(int $user_id): UserResource
     {
-        return new UserResource(app(UserRepositoryInterface::class)->getOneById($user_id));
+        return new UserResource(app(UserRepositoryInterface::class)->getOneByIdOrFail($user_id));
     }
 
     /**
