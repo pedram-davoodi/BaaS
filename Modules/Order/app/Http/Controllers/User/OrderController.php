@@ -3,11 +3,6 @@
 namespace Modules\Order\app\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
-use App\Repositories\OrderItemRepositoryInterface;
-use App\Repositories\OrderRepositoryInterface;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Modules\Order\app\Http\Requests\StoreOrderRequest;
 use Modules\Order\app\Resources\OrderResource;
