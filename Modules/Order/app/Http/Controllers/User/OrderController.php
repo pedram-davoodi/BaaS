@@ -17,10 +17,8 @@ class OrderController extends Controller
 {
     public function store(StoreOrderRequest $request, OrderService $orderService)
     {
-        $userId = Auth::guard('api')->id();
-
         $order = $orderService->createOrder(
-            $userId,
+            Auth::guard('api')->id(),
             $request->get('physical_product'),
             $request->get('shipping_address'),
             $request->get('shipping_method')
