@@ -1,7 +1,7 @@
-# SiteBuilder
+# BaaS (Backend as a Service)
 
 
-SiteBuilder is a flexible and user-friendly tool designed to simplify website creation. It empowers users to build customized websites efficiently, offering a range of features and templates for various needs.
+BaaS is a flexible and user-friendly tool designed to simplify website creation. It empowers users to build customized websites efficiently, offering a range of features and templates for various needs.
 
 ## Features
 
