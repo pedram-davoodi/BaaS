@@ -1,7 +1,6 @@
-# BaaS (Backend as a Service)
+# BaaS
 
-
-BaaS is a flexible and user-friendly tool designed to simplify website creation. It empowers users to build customized websites efficiently, offering a range of features and templates for various needs.
+BaaS (Backend as a Service) is a flexible and user-friendly tool designed to simplify website creation. It empowers users to build customized websites efficiently, offering a range of features and templates for various needs.
 
 ## Features
 
