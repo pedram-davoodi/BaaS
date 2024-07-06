@@ -24,17 +24,20 @@ COPY composer.json composer.lock /var/www/html/
 
 ENV COMPOSER_ALLOW_SUPERUSER=1
 
-# Install the dependencies
-RUN composer install --no-scripts --no-autoloader --ignore-platform-reqs
+# Install the dependencies with verbose output and scripts enabled
+RUN composer install --no-autoloader --ignore-platform-reqs -vvv
 
 # Copy the rest of the application code
 COPY . /var/www/html/
 
-# Generate Laravel application key
-RUN php artisan key:generate
+# Copy the .env.example to .env
+RUN cp /var/www/html/.env.example /var/www/html/.env
 
 # Generate the autoloader
 RUN composer dump-autoload
+
+# Generate Laravel application key
+RUN php artisan key:generate
 
 # Set permissions for Laravel
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
@@ -48,4 +51,5 @@ RUN a2enmod rewrite
 # Expose port 80 for Apache
 EXPOSE 80
 
-# CMD ["apache2-foreground"]
+# Start Apache in the foreground
+CMD ["apache2-foreground"]
