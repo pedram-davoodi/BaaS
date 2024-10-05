@@ -19,16 +19,13 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 # Set the working directory
 WORKDIR /var/www/html
 
-# Copy the composer files for optimized caching
-COPY composer.json composer.lock /var/www/html/
+# Copy the rest of the application code
+COPY . /var/www/html/
 
 ENV COMPOSER_ALLOW_SUPERUSER=1
 
 # Install the dependencies with verbose output and scripts enabled
-RUN composer install --no-autoloader --ignore-platform-reqs -vvv
-
-# Copy the rest of the application code
-COPY . /var/www/html/
+RUN composer install --ignore-platform-reqs -vvv
 
 # Copy the .env.example to .env
 RUN cp /var/www/html/.env.example /var/www/html/.env
