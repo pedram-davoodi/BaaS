@@ -17,7 +17,7 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
-/Modules/Shop/vendor/*
-/Modules/User/vendor/*
-/Modules/Order/vendor/*
-/Modules/Billing/vendor/*
+/Modules/Shop/vendor
+/Modules/User/vendor
+/Modules/Order/vendor
+/Modules/Billing/vendor
