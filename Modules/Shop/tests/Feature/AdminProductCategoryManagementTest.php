@@ -1,9 +1,9 @@
 <?php
 
+namespace Modules\Shop\tests\Feature;
 
 use App\Events\ProductCategoryDeleted;
 use App\Events\ProductCategoryUpdated;
-use App\Events\ProductDeleted;
 use App\Events\ProductUpdated;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Str;

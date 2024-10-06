@@ -30,12 +30,6 @@ RUN composer install --ignore-platform-reqs -vvv
 # Copy the .env.example to .env
 RUN cp /var/www/html/.env.example /var/www/html/.env
 
-# Generate the autoloader
-RUN composer dump-autoload
-
-# Generate Laravel application key
-RUN php artisan key:generate
-
 # Set permissions for Laravel
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 

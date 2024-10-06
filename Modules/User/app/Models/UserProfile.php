@@ -6,7 +6,7 @@ use App\ModelInterfaces\UserProfileModelInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Modules\User\database\factories\UserProfileFactory;
+use Modules\User\Database\Factories\UserProfileFactory;
 
 class UserProfile extends Model implements UserProfileModelInterface
 {

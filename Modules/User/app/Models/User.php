@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
-use Modules\User\database\factories\UserFactory;
+use Modules\User\Database\Factories\UserFactory;
 
 class User extends Authenticatable implements UserModelInterface
 {
