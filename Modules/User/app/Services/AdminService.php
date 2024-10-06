@@ -37,7 +37,7 @@ class AdminService
     {
         $admin = app(AdminRepositoryInterface::class)->getFirstWhere(['email' => $email]);
         AdminLoggedIn::dispatch($admin);
-        return app(AdminRepositoryInterface::class)->createAccessToken($admin->id);
+        return $admin->createToken('User Access Token');
     }
 
     /**

@@ -8,6 +8,7 @@ use App\Events\ProductUpdated;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Str;
 use Modules\Shop\tests\Feature\TestCase;
+use Modules\User\app\Services\AdminService;
 
 class AdminProductCategoryManagementTest extends TestCase
 {
@@ -17,7 +18,9 @@ class AdminProductCategoryManagementTest extends TestCase
     public function setUp(): void
     {
         TestCase::setUp();
-        $this->adminToken = $this->adminRepository->createAccessToken($this->adminRepository->faker()->create()->id)->accessToken;
+        $admin = $this->adminRepository->faker()->create();
+        $adminService = new AdminService();
+        $this->adminToken = $adminService->createAccessToken($admin->email)->accessToken;
     }
 
     public function testProductCategoryCanBeCreatedByAdmin(): void

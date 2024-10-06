@@ -15,23 +15,4 @@ class UserRepository extends EloquentRepository implements UserRepositoryInterfa
     {
         return $this->model->whereIn('email', $emails)->get();
     }
-
-    /**
-     * Create access token for the user.
-     */
-    public function createAccessToken($user_id): PersonalAccessTokenResult
-    {
-        return User::find($user_id)->createToken('User Access Token');
-    }
-
-    /**
-     * Check user credentials.
-     */
-    public function checkUserCredential(string $email, string $password): bool
-    {
-        return Auth::attempt([
-            'email' => $email,
-            'password' => $password,
-        ]);
-    }
 }

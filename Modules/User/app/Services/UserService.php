@@ -64,7 +64,7 @@ class UserService
     {
         $user = app(UserRepositoryInterface::class)->getOneByIdOrFail($user_id);
         UserLoggedIn::dispatch($user);
-        return app(UserRepositoryInterface::class)->createAccessToken($user_id);
+        return $user->createToken('User Access Token');
     }
 
     /**

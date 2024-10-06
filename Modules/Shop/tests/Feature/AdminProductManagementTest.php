@@ -6,6 +6,7 @@ use App\Events\ProductDeleted;
 use App\Events\ProductUpdated;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Str;
+use Modules\User\app\Services\AdminService;
 
 class AdminProductManagementTest extends TestCase
 {
@@ -14,8 +15,10 @@ class AdminProductManagementTest extends TestCase
 
     public function setUp(): void
     {
-        parent::setUp();
-        $this->adminToken = $this->adminRepository->createAccessToken($this->adminRepository->faker()->create()->id)->accessToken;
+        TestCase::setUp();
+        $admin = $this->adminRepository->faker()->create();
+        $adminService = new AdminService();
+        $this->adminToken = $adminService->createAccessToken($admin->email)->accessToken;
     }
 
     public function testProductCanBeCreatedByAdmin(): void
