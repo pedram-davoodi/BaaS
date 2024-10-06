@@ -7,12 +7,11 @@
 >
     <testsuites>
         <testsuite name="Unit">
-            <directory>tests/Unit</directory>
             <directory>Modules/User/tests/Unit</directory>
             <directory>Modules/Shop/tests/Unit</directory>
         </testsuite>
         <testsuite name="Feature">
-            <directory>tests/Feature</directory>
+
             <directory>Modules/User/tests/Feature</directory>
             <directory>Modules/Shop/tests/Feature</directory>
         </testsuite>
