@@ -39,7 +39,7 @@ class ProductCategoryService
     public function delete(int $id): bool
     {
         $productCategoryRepository = app(ProductCategoryRepositoryInterface::class);
-        $productCategory = $productCategoryRepository->getOneByIdOrFail($id);
+        $productCategoryRepository->getOneByIdOrFail($id);
         $productCategoryRepository->delete(["id" => $id]);
         ProductCategoryDeleted::dispatch($productCategoryRepository->getOneByIdOrFailWithTrashed($id));
         return true;
