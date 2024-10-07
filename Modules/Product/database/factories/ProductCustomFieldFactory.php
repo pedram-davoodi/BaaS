@@ -1,16 +1,15 @@
 <?php
 
-namespace Modules\Order\database\factories;
+namespace Modules\Product\database\factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Modules\Product\app\Models\OrderItems;
 
-class OrderItemsFactory extends Factory
+class ProductCustomFieldFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      */
-    protected $model = OrderItems::class;
+    protected $model = \Modules\Product\app\Models\ProductCustomField::class;
 
     /**
      * Define the model's default state.
@@ -18,7 +17,8 @@ class OrderItemsFactory extends Factory
     public function definition(): array
     {
         return [
-            'price' => rand(10 , 10000)
+            "name" => $this->faker->word ,
+            "value" => $this->faker->word ,
         ];
     }
 }

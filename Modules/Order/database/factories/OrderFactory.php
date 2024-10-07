@@ -4,7 +4,7 @@ namespace Modules\Order\database\factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Modules\Order\app\Models\Order;
-use Modules\Shop\app\Enums\OrderStatus;
+use Modules\Product\app\Enums\OrderStatus;
 
 class OrderFactory extends Factory
 {
