@@ -27,7 +27,7 @@ class AdminProductCategoryManagementTest extends TestCase
     {
         $response = $this
             ->withHeaders($this->headers + ['Authorization' => 'Bearer '.$this->adminToken])
-            ->post(route('shop.admin.product-categories.store' , [
+            ->post(route('product.admin.product-categories.store' , [
                 "name" => fake()->name,
             ]));
 
@@ -40,7 +40,7 @@ class AdminProductCategoryManagementTest extends TestCase
     {
         $response = $this
             ->withHeaders($this->headers)
-            ->post(route('shop.admin.product-categories.store' , [
+            ->post(route('product.admin.product-categories.store' , [
                 "name" => fake()->name,
             ]));
 
@@ -51,7 +51,7 @@ class AdminProductCategoryManagementTest extends TestCase
     {
         $response = $this
             ->withHeaders($this->headers + ['Authorization' => 'Bearer '.$this->adminToken])
-            ->post(route('shop.admin.product-categories.store'));
+            ->post(route('product.admin.product-categories.store'));
 
         $response->assertJsonValidationErrors('name');
     }
@@ -62,7 +62,7 @@ class AdminProductCategoryManagementTest extends TestCase
         $this->productCategoryRepository->faker()->count(10)->create();
 
         $response = $this->withHeaders($this->headers + ['Authorization' => 'Bearer '.$this->adminToken])
-            ->get(route('shop.admin.product-categories.index'));
+            ->get(route('product.admin.product-categories.index'));
 
         $response->assertStatus(200);
         $response->assertSee('data');
@@ -74,7 +74,7 @@ class AdminProductCategoryManagementTest extends TestCase
         $this->productCategoryRepository->faker()->count(45)->create();
 
         $response = $this->withHeaders($this->headers + ['Authorization' => 'Bearer '.$this->adminToken])
-            ->get(route('shop.admin.product-categories.index'));
+            ->get(route('product.admin.product-categories.index'));
 
         $response->assertStatus(200);
         $response->assertSee('data');
@@ -90,7 +90,7 @@ class AdminProductCategoryManagementTest extends TestCase
         $this->productRepository->faker()->count(10)->create();
 
         $response = $this->withHeaders($this->headers)
-            ->get(route('shop.admin.product-categories.index'));
+            ->get(route('product.admin.product-categories.index'));
 
         $response->assertStatus(401);
         $response->assertSee('message');
@@ -103,7 +103,9 @@ class AdminProductCategoryManagementTest extends TestCase
             'product_category_id' => $this->productCategoryRepository->faker()->create()->id
         ]);
         $response = $this->withHeaders($this->headers + ['Authorization' => 'Bearer '.$this->adminToken])
-            ->delete(route('shop.admin.product-categories.destroy' , 1));
+            ->delete(route('product.admin.product-categories.destroy' , 1));
+
+
 
         $product = $this->productCategoryRepository->getOneByIdOrFailWithTrashed(1);
         $response->assertStatus(200);
@@ -112,12 +114,23 @@ class AdminProductCategoryManagementTest extends TestCase
         Event::assertDispatched(ProductCategoryDeleted::class);
     }
 
+    public function testProductCategoryCantBeDeleted()
+    {
+        Event::fake();
+        $response = $this->withHeaders($this->headers + ['Authorization' => 'Bearer '.$this->adminToken])
+            ->delete(route('product.admin.product-categories.destroy' , 1));
+
+        $response->assertStatus(404);
+        $response->assertSee('message');
+        Event::assertNotDispatched(ProductCategoryDeleted::class);
+    }
+
     public function testProductCategoryCantBeDeletedByGuess()
     {
         Event::fake();
         $this->productRepository->faker()->create();
         $response = $this->withHeaders($this->headers)
-            ->delete(route('shop.admin.product-categories.destroy' , 1));
+            ->delete(route('product.admin.product-categories.destroy' , 1));
         $response->assertStatus(401);
         $response->assertSee('message');
         Event::assertNotDispatched(ProductCategoryDeleted::class);
@@ -129,7 +142,7 @@ class AdminProductCategoryManagementTest extends TestCase
         $category = $this->productCategoryRepository->faker()->create();
         $response = $this
             ->withHeaders($this->headers + ['Authorization' => 'Bearer '.$this->adminToken])
-            ->put(route('shop.admin.product-categories.update' , 1 ) ,  [
+            ->put(route('product.admin.product-categories.update' , 1 ) ,  [
                 "name" => $name = fake()->name,
             ]);
 
@@ -145,7 +158,7 @@ class AdminProductCategoryManagementTest extends TestCase
 
         $response = $this
             ->withHeaders($this->headers)
-            ->put(route('shop.admin.product-categories.update' , 1 ) ,  [
+            ->put(route('product.admin.product-categories.update' , 1 ) ,  [
                 "name" => $name = fake()->name,
             ]);
         $response->assertStatus(401)->assertSee('message');

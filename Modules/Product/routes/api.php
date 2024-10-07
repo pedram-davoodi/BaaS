@@ -19,7 +19,7 @@ use Modules\User\app\Http\Controllers\User\UserProfileController;
     | is assigned the "api" middleware group. Enjoy building your API!
     |
 */
-Route::group(['prefix' => 'product-module', 'as' => 'shop.'], function () {
+Route::group(['prefix' => 'product-module', 'as' => 'product.'], function () {
 
     Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
         Route::group(['middleware' => ['auth:api-admin']], function () {

@@ -25,10 +25,10 @@ class ProductCategoryService
     /**
      * Update an existing product category
      */
-    public function update(int $id , string $name): ProductCategoryModelInterface
+    public function update(int $id, string $name): ProductCategoryModelInterface
     {
         $productCategoryRepository = app(ProductCategoryRepositoryInterface::class);
-        app(ProductCategoryRepositoryInterface::class)->update(['name' => $name] , ["id" => $id]);
+        app(ProductCategoryRepositoryInterface::class)->update(['name' => $name], ["id" => $id]);
         ProductCategoryUpdated::dispatch($productCategory = $productCategoryRepository->getOneByIdOrFail($id));
         return $productCategory;
     }
@@ -42,6 +42,6 @@ class ProductCategoryService
         $productCategory = $productCategoryRepository->getOneByIdOrFail($id);
         $productCategoryRepository->delete(["id" => $id]);
         ProductCategoryDeleted::dispatch($productCategoryRepository->getOneByIdOrFailWithTrashed($id));
-        return $productCategory;
+        return true;
     }
 }
