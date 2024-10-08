@@ -3,22 +3,28 @@
 namespace Modules\User\app\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
-use App\Repositories\UserRepositoryInterface;
 use Illuminate\Support\Facades\Auth;
 use Modules\User\app\Http\Requests\UpdateUserProfileRequest;
 use App\Repositories\UserProfileRepositoryInterface;
 use Modules\User\app\Resources\ProfileResource;
 use Modules\User\app\Services\UserService;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Throwable;
 
 class UserProfileController extends Controller
 {
     /**
      * Show the user profile resource.
+     * @throws Throwable
      */
     public function show(): ProfileResource
     {
-        return new ProfileResource(app(UserProfileRepositoryInterface::class)
-            ->getFirstWhere('user_id', Auth::guard('api')->id()));
+        $profile = app(UserProfileRepositoryInterface::class)
+            ->getFirstWhere('user_id', Auth::guard('api')->id());
+
+        throw_if(empty($profile) , NotFoundHttpException::class);
+
+        return new ProfileResource($profile);
     }
 
     /**
