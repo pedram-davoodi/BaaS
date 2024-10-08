@@ -4,6 +4,7 @@ namespace Modules\User\tests\Feature;
 
 use App\ModelInterfaces\Base\ModelInterface;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Modules\User\app\Models\UserProfile;
 use Modules\User\app\Services\UserService;
 
 class UserProfileTest extends TestCase
@@ -63,5 +64,13 @@ class UserProfileTest extends TestCase
             ->get(route('user.user.profiles.show'));
 
         $response->assertSee('data')->assertOk();
+    }
+
+    public function test_user_profiles_not_found()
+    {
+        $response = $this->withHeaders($this->headers)
+            ->get(route('user.user.profiles.show'));
+
+        $response->assertSee('message')->assertNotFound();
     }
 }
