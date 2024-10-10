@@ -1,11 +1,11 @@
 {
-    "name": "Shop",
-    "alias": "shop",
+    "name": "Product",
+    "alias": "product",
     "description": "",
     "keywords": [],
     "priority": 0,
     "providers": [
-        "Modules\\Shop\\app\\Providers\\ShopServiceProvider"
+        "Modules\\Product\\app\\Providers\\ProductServiceProvider"
     ],
     "files": []
 }

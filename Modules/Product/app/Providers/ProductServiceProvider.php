@@ -7,9 +7,9 @@ use Illuminate\Support\ServiceProvider;
 
 class ProductServiceProvider extends ServiceProvider
 {
-    protected string $moduleName = 'Shop';
+    protected string $moduleName = 'Product';
 
-    protected string $moduleNameLower = 'shop';
+    protected string $moduleNameLower = 'product';
 
     /**
      * Boot the application events.
