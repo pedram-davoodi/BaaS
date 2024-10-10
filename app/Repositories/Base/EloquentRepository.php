@@ -21,6 +21,11 @@ class EloquentRepository implements RepositoryInterface
         return $model;
     }
 
+    public function first(): ?ModelInterface
+    {
+        return $this->model->first() ?? null;
+    }
+
     public function getOneByIdOrFailWithTrashed($id): ?ModelInterface
     {
         $model = $this->model->where($this->model->getKeyName() , $id)->withTrashed()->first();

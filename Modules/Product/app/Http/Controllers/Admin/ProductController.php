@@ -32,7 +32,8 @@ class ProductController extends Controller
             $request->product_category_id,
             $request->price,
             saveBase64Files($request->image),
-            $request->description
+            $request->description,
+            $request->stock,
         ));
     }
 
@@ -40,15 +41,16 @@ class ProductController extends Controller
     /**
      * create new product
      */
-    public function update($product_id ,UpdateProductRequest $request, ProductService $productService): ProductResource
+    public function update($product_id ,UpdateProductRequest $request, ProductService $productService , ProductRepositoryInterface $productRepository): ProductResource
     {
         return new ProductResource($productService->update(
             $product_id,
             $request->name,
             $request->product_category_id,
             $request->price,
-            !empty($request->image) ? saveBase64Files($request->image) : $request->image_path,
-            $request->description
+            !empty($request->image) ? saveBase64Files($request->image) : $productRepository->getOneByIdOrFail($product_id)->image_path,
+            $request->description,
+            $request->stock,
         ));
     }
 

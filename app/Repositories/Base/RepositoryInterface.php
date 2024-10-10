@@ -8,6 +8,8 @@ use Illuminate\Support\Collection;
 
 interface RepositoryInterface
 {
+    public function first(): ?ModelInterface;
+
     public function getOneByIdOrFail($id): ?ModelInterface;
 
     public function getOneById($id): ?ModelInterface;

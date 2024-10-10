@@ -15,6 +15,7 @@ class StoreProductRequest extends FormRequest
             "name" => 'required|string',
             'product_category_id' => 'nullable|exists:product_categories,id',
             "price" => 'required|integer|min:0',
+            "stock" => 'nullable|integer|min:0',
             "image" => 'required|string',
             "description" => 'required|string',
         ];

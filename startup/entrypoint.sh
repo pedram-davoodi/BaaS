@@ -42,3 +42,8 @@ fi
 
 # Execute the main container process (CMD in Dockerfile)
 exec "$@"
+
+# Make storage link
+echo "Make storage link..."
+php artisan storage:link
+

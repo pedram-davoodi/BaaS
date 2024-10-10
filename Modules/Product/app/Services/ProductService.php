@@ -14,13 +14,14 @@ class ProductService
     /**
      * Create a new product
      */
-    public function store($name, $product_category_id, $price, $image, $description): ProductModelInterface
+    public function store(string $name, int $product_category_id, int $price, string $image, string $description , ?int $stock = 0): ProductModelInterface
     {
         $product = app(ProductRepositoryInterface::class)->create([
             "name" => $name,
             "product_category_id" => $product_category_id,
             "price" => $price,
             "image_path" => $image,
+            "stock" => $stock,
             "description" => $description
         ]);
 
@@ -32,13 +33,14 @@ class ProductService
     /**
      * Update an existing product
      */
-    public function update($product_id, $name, $product_category_id, $price, $image, $description): ProductModelInterface
+    public function update(int $product_id, string $name, int $product_category_id, int $price, string $image, string $description , ?int $stock= 0): ProductModelInterface
     {
         app(ProductRepositoryInterface::class)->update([
                 "name" => $name,
                 "product_category_id" => $product_category_id,
                 "price" => $price,
                 "image_path" => $image,
+                "stock" => $stock,
                 "description" => $description
             ],
             [
