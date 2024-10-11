@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Modules\Cart\app\Http\Controllers\User\CartController;
 
 /*
     |--------------------------------------------------------------------------
@@ -13,7 +14,15 @@ use Illuminate\Support\Facades\Route;
     | is assigned the "api" middleware group. Enjoy building your API!
     |
 */
+Route::group(['prefix' => 'cart-module', 'as' => 'user.'], function () {
 
-Route::middleware(['auth:sanctum'])->prefix('v1')->name('api.')->group(function () {
-    Route::get('cart', fn (Request $request) => $request->user())->name('cart');
+    Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
+    });
+
+    Route::group(['prefix' => 'user', 'as' => 'user.'], function () {
+        Route::group(['middleware' => ['auth:api']], function () {
+            Route::resource('/cart', CartController::class);
+        });
+
+    });
 });

@@ -1,14 +1,13 @@
 <?php
 
-namespace Modules\Order\app\Rules;
+namespace Modules\Cart\app\Rules;
 
 use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Contracts\Validation\DataAwareRule;
-use Illuminate\Support\Facades\Auth;
 use Throwable;
 
-class OrderableIdValidation implements ValidationRule,DataAwareRule
+class CartableIdValidation implements ValidationRule,DataAwareRule
 {
     /**
      * All the data under validation.
@@ -23,7 +22,7 @@ class OrderableIdValidation implements ValidationRule,DataAwareRule
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
         try {
-            $repository = "App\Repositories\\".ucfirst($this->data['orderable_type'][array_search($value , $this->data['orderable_id'])])."RepositoryInterface";
+            $repository = "App\Repositories\\".ucfirst($this->data['cartable_type'])."RepositoryInterface";
             if (!app($repository)->getOneById($value)?->exists()) {
                 $fail("product dose not exits");
             }

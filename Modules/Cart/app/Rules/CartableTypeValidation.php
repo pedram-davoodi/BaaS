@@ -1,12 +1,12 @@
 <?php
 
-namespace Modules\Order\app\Rules;
+namespace Modules\Cart\app\Rules;
 
-use App\ModelInterfaces\Base\Orderable;
+use App\ModelInterfaces\Base\Cartable;
 use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
 
-class OrderableTypeValidation implements ValidationRule
+class CartableTypeValidation implements ValidationRule
 {
     /**
      * Run the validation rule.
@@ -14,8 +14,8 @@ class OrderableTypeValidation implements ValidationRule
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
         $interface = "App\ModelInterfaces\\".ucfirst($value)."ModelInterface";
-         if (!interface_exists($interface) || !in_array(Orderable::class, class_implements($interface))){
-             $fail("The item cannot be ordered");
+         if (!interface_exists($interface) || !in_array(Cartable::class, class_implements($interface))){
+             $fail("The item cannot be added to the cart.");
          }
     }
 }
