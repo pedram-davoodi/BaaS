@@ -3,11 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Modules\Product\app\Http\Controllers\Admin\ProductCategoryController;
 use Modules\Product\app\Http\Controllers\Admin\ProductController;
-use Modules\User\app\Http\Controllers\Admin\AdminController;
-use Modules\User\app\Http\Controllers\Admin\BlockedAccountController;
-use Modules\User\app\Http\Controllers\Admin\UserController as AdminUserController;
-use Modules\User\app\Http\Controllers\User\UserController;
-use Modules\User\app\Http\Controllers\User\UserProfileController;
+use Modules\Product\app\Http\Controllers\User\ProductController as UserProductController;
 
 /*
     |--------------------------------------------------------------------------
@@ -29,7 +25,7 @@ Route::group(['prefix' => 'product-module', 'as' => 'product.'], function () {
     });
 
     Route::group(['prefix' => 'user', 'as' => 'user.'], function () {
-
+        Route::resource('products' , UserProductController::class , ['only' => ['index', 'show']]);
         Route::group(['middleware' => ['auth:api']], function () {
         });
 
