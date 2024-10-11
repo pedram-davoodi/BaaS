@@ -30,14 +30,6 @@ class CartController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, $id): RedirectResponse
-    {
-        //
-    }
-
-    /**
      * Remove the specified resource from storage.
      */
     public function destroy($id)
