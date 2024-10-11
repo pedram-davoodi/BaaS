@@ -29,4 +29,20 @@ class Product extends Model implements ProductModelInterface
     {
         return $this->price;
     }
+
+    /**
+     * Check if entered query is allowed for adding to cart
+     *
+     * @param int $quantity
+     * @return bool
+     */
+    public function quantityAllowed(int $quantity): bool
+    {
+        return $this->stock >= $quantity;
+    }
+
+    public function getOrderablePriceAttribute(): int
+    {
+        return $this->price;
+    }
 }

@@ -21,7 +21,9 @@ class OrderController extends Controller
 
         $orderItems = collect($request->get('orderable_type'))
             ->map(fn($orderableType, $key) => [
-                'price' => app("App\Repositories\\{$orderableType}RepositoryInterface")->price($request->get('orderable_id')[$key]),
+                'price' => app("App\Repositories\\{$orderableType}RepositoryInterface")
+                    ->getOneByIdOrFail($request->get('orderable_id')[$key])
+                    ->orderable_price,
                 'orderable_id' => $request->get('orderable_id')[$key],
                 'orderable_type' => $orderableType
             ]);

@@ -2,6 +2,8 @@
 
 namespace App\ModelInterfaces;
 
+use App\ModelInterfaces\Base\Cartable;
+use App\ModelInterfaces\Base\Orderable;
 use App\ModelInterfaces\Base\ModelInterface;
 
 /**
@@ -9,6 +11,6 @@ use App\ModelInterfaces\Base\ModelInterface;
  * @property int price
  * @property string deleted_at
  */
-interface ProductModelInterface extends ModelInterface
+interface ProductModelInterface extends ModelInterface,Cartable,Orderable
 {
 }
