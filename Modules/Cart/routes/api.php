@@ -21,7 +21,8 @@ Route::group(['prefix' => 'cart-module', 'as' => 'cart.'], function () {
 
     Route::group(['prefix' => 'user', 'as' => 'user.'], function () {
         Route::group(['middleware' => ['auth:api']], function () {
-            Route::resource('/cart', CartController::class , ['only' => ['store', 'show' , 'destroy']]);
+            Route::post('/cart', [CartController::class , 'store'])->name('cart.store');
+            Route::get('/cart', [CartController::class , 'show'])->name('cart.show');
         });
 
     });

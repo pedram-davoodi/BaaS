@@ -2,6 +2,7 @@
 
 namespace Modules\Cart\tests\Feature;
 
+use Modules\Cart\app\Models\Cart;
 use Modules\User\app\Services\UserService;
 
 class UserCartTest extends TestCase
@@ -112,6 +113,45 @@ class UserCartTest extends TestCase
             ]);
 
         $response->assertStatus(200)->assertSee('data')->assertJsonCount(2 , 'data.items');
+    }
+
+    public function testCartCanBeShown()
+    {
+        Cart::query()->delete();
+        $product = $this->productRepository->faker()->create([
+            "stock" => 1,
+        ]);
+        $this->withHeaders($this->headers)
+            ->post(route('cart.user.cart.store'), [
+                "cartable_id" => $product->id,
+                "cartable_type" => "Product",
+                "quantity" => 1,
+            ]);
+
+        $response =$this->withHeaders($this->headers)
+            ->get(route('cart.user.cart.show'))
+            ->assertSee('items')
+            ->assertJsonCount(1 , 'data.items')
+            ->assertStatus(200);
+
+        $this->assertEquals(1 , json_decode($response->getContent() , true)['data']['count']);
+    }
+
+    public function testUserIsNotLoggedIn()
+    {
+        $this->withHeaders(['accept' => 'application/json'])
+            ->get(route('cart.user.cart.show'))
+            ->assertSee('message')->assertStatus(401);
+    }
+
+    public function testNoItemIsInCart()
+    {
+        Cart::query()->delete();
+        $this->withHeaders($this->headers)
+            ->get(route('cart.user.cart.show'))
+            ->assertSee('items')
+            ->assertStatus(200)
+            ->assertJsonCount(0 , 'data.items');
     }
 }
 

@@ -3,8 +3,10 @@
 namespace Modules\Cart\app\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Repositories\CartRepositoryInterface;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Modules\Cart\app\Http\Requests\StoreCartRequest;
 use Modules\Cart\app\Resources\CartResource;
 use Modules\Cart\app\Rules\CartableTypeValidation;
@@ -24,9 +26,10 @@ class CartController extends Controller
     /**
      * Show the specified resource.
      */
-    public function show($id)
+    public function show(CartRepositoryInterface $cartRepository): CartResource
     {
-        return view('cart::show');
+        $cart = $cartRepository->getFirstWhere(['user_id' => Auth::id()]);
+        return new CartResource($cart);
     }
 
     /**
