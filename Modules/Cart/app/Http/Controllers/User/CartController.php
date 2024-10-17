@@ -7,6 +7,7 @@ use App\Repositories\CartRepositoryInterface;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Modules\Cart\app\Http\Requests\DestroyCartRequest;
 use Modules\Cart\app\Http\Requests\StoreCartRequest;
 use Modules\Cart\app\Resources\CartResource;
 use Modules\Cart\app\Rules\CartableTypeValidation;
@@ -35,8 +36,9 @@ class CartController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
+    public function destroy(DestroyCartRequest $request , CartService $cartService)
     {
-        //
+        $cart = $cartService->removeItem($request->cartable_id , $request->cartable_type , $request->quantity);
+        return new CartResource($cart);
     }
 }
