@@ -3,10 +3,8 @@
 namespace Modules\Order\app\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Modules\Order\app\Rules\OrderableIdValidation;
-use Modules\Order\app\Rules\OrderableTypeValidation;
 
-class StoreOrderRequest extends FormRequest
+class StoreCartOrderRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -14,10 +12,6 @@ class StoreOrderRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "orderable_id" => "required|array",
-            "orderable_type" => "required|array",
-            "orderable_id.*" => ["required" , new OrderableIdValidation],
-            "orderable_type.*" => ["required" , new OrderableTypeValidation],
             "shipping_address" => "nullable|string|max:2000",
             "shipping_method" => "nullable|string|max:200"
         ];

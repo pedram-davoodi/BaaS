@@ -30,7 +30,7 @@ interface RepositoryInterface
 
     public function insert(array $data): bool;
 
-    public function delete($id, ...$params): bool;
+    public function delete(...$params): bool;
 
     public function updateOrCreate(array $attributes, array $values = []): ModelInterface;
 }

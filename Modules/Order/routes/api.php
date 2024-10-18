@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Modules\Order\app\Http\Controllers\User\CartOrderController;
 use Modules\Order\app\Http\Controllers\User\OrderController;
 
 /*
@@ -26,6 +26,7 @@ Route::group(['prefix' => 'order-module', 'as' => 'order.'], function () {
 
         Route::group(['middleware' => ['auth:api']], function () {
             Route::resource('orders' , OrderController::class);
+            Route::post('/cart-orders' , [CartOrderController::class , 'store'])->name('cart-orders.store');
         });
 
     });

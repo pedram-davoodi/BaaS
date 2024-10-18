@@ -14,7 +14,6 @@ class OrderController extends Controller
     {
         $order = $orderService->createOrder(
             Auth::guard('api')->id(),
-            $request->get('physical_product'),
             $request->get('shipping_address'),
             $request->get('shipping_method')
         );

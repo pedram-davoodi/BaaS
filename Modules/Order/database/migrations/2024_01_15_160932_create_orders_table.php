@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->boolean('physical_product');
             $table->text('shipping_address')->nullable();
             $table->string('shipping_method')->nullable();
             $table->enum('status' , ['Pending' , 'Processing' , 'Shipping' , 'Done' , 'Refunded' , 'Cancelled']);
