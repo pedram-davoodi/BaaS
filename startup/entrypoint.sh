@@ -10,6 +10,8 @@ composer install --ignore-platform-reqs
 # Wait for the database to be ready (optional, if needed)
 # sleep 10
 
+cd ..
+
 # Run migrations and seed the database
 echo "Running migrations and seeding..."
 php artisan migrate --seed
@@ -47,3 +49,5 @@ exec "$@"
 echo "Make storage link..."
 php artisan storage:link
 
+chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
+chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
